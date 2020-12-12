@@ -1,12 +1,18 @@
 const { expect } = require('chai')
 const userController = require('../src/controllers/user')
+const { dbsize } = require('../src/dbClient')
+
+let client
 
 describe('User', () => {
 
-
   describe('Create', () => {
+    before(() => {
+      client = require('../src/dbClient')
+    })
 
     it('create a new user', (done) => {
+      client.flushall();
       const user = {
         username: 'sergkudinov',
         firstname: 'Sergei',
@@ -32,7 +38,9 @@ describe('User', () => {
     })
 
     it('avoid creating an existing user', (done)=> {
-      const user = {
+    //   // TODO create this test
+    //   // Warning: the user already exists
+     const user = {
         username: 'sergkudinov',
         firstname: 'Sergei',
         lastname: 'Kudinov'
@@ -42,19 +50,46 @@ describe('User', () => {
         expect(result).to.be.equal(null)
         done()
       })
-    //   // TODO create this test
-    //   // Warning: the user already exists
-    //   done()
-    // })
+    })
   })
 
-  // describe('Get', ()=> {
-  //   // TODO Create test for the get method
-  //   it('get a user by username', (done) => {
-  //     // 1. First, create a user to make this unit test independent from the others
-  //     // 2. Then, check if the result of the get method is correct
-  //     done()
-  //   })
-  // })
-})
+  describe('Get', ()=> {
+    before(() => {
+      client = require('../src/dbClient')
+    })
+
+    beforeEach(function () {
+      client.flushall();
+    })
+  // TODO Create test for the get method
+  // 1. First, create a user to make this unit test independent from the others
+      it('Get users', (done) => {
+     const user = {
+        username: 'sergkudinov',
+        firstname: 'Sergei',
+        lastname: 'Kudinov'
+      }
+      userController.create(user, (err, result) => {
+        // 2. Then, check if the result of the get method is correct
+        userController.get(user.username, (err, result) => {
+          expect(err).to.be.equal(null)
+          expect(result).to.be.equal(user)
+          done()
+        })
+      })
+    })
+   
+    it('Get a user that doesn\'t exist', (done) => {
+      const user = {
+        username: 'sergkudinov',
+        firstname: 'Sergei',
+        lastname: 'Kudinov'
+      }
+      userController.get(user.username, (err, result) => {
+          expect(err).not.to.be.equal(null)
+          expect(result).not.to.be.equal("OK")
+          done()
+      })
+    })
+  })
 })
