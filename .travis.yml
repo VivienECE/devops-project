@@ -9,3 +9,11 @@ script:
 - npm install
 - echo 'Testing'
 - npm test
+deploy:
+ provider: heroku
+ api_key:
+  secure: ee2ea119-2860-4a27-9471-8b329691db6c
+ app: devops-app
+ on:
+  repo: vivienece/devops-project
+
