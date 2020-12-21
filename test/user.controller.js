@@ -58,10 +58,6 @@ describe('User', () => {
       client = require('../src/dbClient')
     })
     
-     after(() => {
-      client.flushall();
-    })
-
   // TODO Create test for the get method
   // 1. First, create a user to make this unit test independent from the others
   
@@ -77,7 +73,6 @@ describe('User', () => {
           done()
        })
     })
-   
     it('Get a user that doesn\'t exist', (done) => {
       const user = {
         username: 'sergkudinove',
@@ -85,6 +80,50 @@ describe('User', () => {
         lastname: 'Kudinov'
       }
       userController.get(user.username, (err, result) => {
+          expect(err).not.to.be.equal(null)
+          expect(result).to.be.equal(null)
+          done()
+      })
+    })
+  })
+  
+    describe('Put', ()=> {
+    before(() => {
+      client = require('../src/dbClient')
+    })
+    
+      after(() => {
+      client.flushall();
+    })
+
+  // TODO Create test for the get method
+  // 1. First, create a user to make this unit test independent from the others
+  
+      it('Modify an user', (done) => {
+      const user = {
+        username: 'sergkudinov',
+        firstname: 'Serge',
+        lastname: 'Kudinoph'
+      }
+      userController.put(user, (err, result) => {
+          expect(err).to.be.equal(null)
+          expect(result).to.be.equal('OK')
+       })
+       
+       userController.get(user.username, (err, result) => {
+         expect(err).to.be.equal(null)
+         expect(result).to.include(user)
+          done()
+       })
+    })
+    
+    it('Modify an user that doesn\'t exist', (done) => {
+      const user = {
+        username: 'sergkudinove',
+        firstname: 'Sergei',
+        lastname: 'Kudinov'
+      }
+      userController.put(user, (err, result) => {
           expect(err).not.to.be.equal(null)
           expect(result).to.be.equal(null)
           done()
