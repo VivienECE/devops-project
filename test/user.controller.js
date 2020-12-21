@@ -96,10 +96,6 @@ describe('User', () => {
       client = require('../src/dbClient')
     })
     
-     after(() => {
-      client.flushall();
-    })
-
   // TODO Create test for the get method
   // 1. First, create a user to make this unit test independent from the others
   
@@ -128,6 +124,40 @@ describe('User', () => {
         lastname: 'Kudinov'
       }
       userController.put(user, (err, result) => {
+          expect(err).not.to.be.equal(null)
+          expect(result).to.be.equal(null)
+          done()
+      })
+    })
+  })
+  
+  describe('Delete', ()=> {
+    before(() => {
+      client = require('../src/dbClient')
+    })
+    
+     after(() => {
+      client.flushall();
+    })
+
+  // TODO Create test for the get method
+  // 1. First, create a user to make this unit test independent from the others
+  
+      it('Delete an user', (done) => {
+      userController.delete(user2.username, (err, result) => {
+          expect(err).to.be.equal(null)
+          expect(result).to.be.equal(1)
+       })
+       
+       userController.get(user2.username, (err, result) => {
+         expect(err).to.be.equal(null)
+         expect(result).to.be.equal(null)
+          done()
+       })
+    })
+    
+    it('Delete an user that doesn\'t exist', (done) => {
+      userController.delete("user_doesn't_exist", (err, result) => {
           expect(err).not.to.be.equal(null)
           expect(result).to.be.equal(null)
           done()

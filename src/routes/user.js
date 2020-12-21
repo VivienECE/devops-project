@@ -74,5 +74,23 @@ userRouter
       resp.status(200).json(respObj)
     })
    })
+   
+   .delete('/:username', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
+    userController.delete(req.params.username, (err, res) => {
+      let respObj
+      if(err) {
+        respObj = {
+          status: "error",
+          msg: err.message
+        }
+        return resp.status(400).json(respObj)
+      }
+      respObj = {
+        status: "success",
+        msg: res
+      }
+      resp.status(200).json(respObj)
+    })
+   })
   
 module.exports = userRouter
