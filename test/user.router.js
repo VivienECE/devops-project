@@ -102,6 +102,50 @@ describe('User REST API', () => {
         .catch((err) => {
            throw err
         })
-    })
+     })
    })
+   
+ describe('PUT /user', () => {
+
+    it('modify one user', (done) => {
+    const user = {
+       username: 'sergkudinov',
+       firstname: 'Serge',
+       lastname: 'Kudinoph'
+     }
+     
+      chai.request(app)
+        .put('/user/sergkudinov')
+        .send(user)
+        .then((res) => {
+          chai.expect(res).to.have.status(200)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+          done()
+        })
+        .catch((err) => {
+           throw err
+        })
+    })
+    
+    it('pass wrong parameters', (done) => {
+      const user = {
+        username: 'sergkudinoph',
+        firstname: 'Sergei',
+        lastname: 'Kudinov'
+      }
+      chai.request(app)
+        .put('/user/sergkudinoph')
+        .send(user)
+        .then((res) => {
+          chai.expect(res).to.have.status(400)
+          chai.expect(res.body.status).to.equal('error')
+          chai.expect(res).to.be.json
+          done()
+        })
+        .catch((err) => {
+           throw err
+        })
+    })
+  })
 })
