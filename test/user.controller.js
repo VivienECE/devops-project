@@ -91,12 +91,12 @@ describe('User', () => {
     })
   })
   
-    describe('Put', ()=> {
+  describe('Put', ()=> {
     before(() => {
       client = require('../src/dbClient')
     })
     
-      after(() => {
+     after(() => {
       client.flushall();
     })
 

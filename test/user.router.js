@@ -5,7 +5,18 @@ const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
 let client
-
+const user1 = {
+       username: 'sergkudinov',
+       firstname: 'Sergei',
+       lastname: 'Kudinov'
+     }
+     
+const user2 = {
+	username: 'viviend',
+	firstname: 'Vivien',
+	lastname: 'Detournay'
+}
+     
 describe('User REST API', () => {
 
   before(() => {
@@ -19,15 +30,19 @@ describe('User REST API', () => {
 
   describe('POST /user', () => {
 
-    it('create a new user', (done) => {
-      const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
+    it('create new users', (done) => {
+     
       chai.request(app)
         .post('/user')
-        .send(user)
+        .send(user1)
+        .then((res) => {
+          chai.expect(res).to.have.status(201)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+        })
+      chai.request(app)
+        .post('/user')
+        .send(user2)
         .then((res) => {
           chai.expect(res).to.have.status(201)
           chai.expect(res.body.status).to.equal('success')
@@ -61,18 +76,27 @@ describe('User REST API', () => {
 
   describe('GET /user', ()=> {
     it('get a new user', (done) => {
-      const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
       chai.request(app)
         .get('/user/sergkudinov')
         .then((res) => {
           chai.expect(res).to.have.status(200)
           chai.expect(res.body.status).to.equal('success')
           chai.expect(res).to.be.json
-          chai.expect(res.body.msg).to.include(user)
+          chai.expect(res.body.msg).to.include(user1)
+          done()
+        })
+        .catch((err) => {
+           throw err
+        })
+    })
+     it('get all users', (done) => {
+      chai.request(app)
+        .get('/user/')
+        .then((res) => {
+          chai.expect(res).to.have.status(200)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+          chai.expect(res.body.msg).to.deep.include(user1,user2)
           done()
         })
         .catch((err) => {
