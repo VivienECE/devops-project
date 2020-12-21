@@ -9,10 +9,10 @@ describe('User', () => {
   describe('Create', () => {
     before(() => {
       client = require('../src/dbClient')
+      client.flushall();
     })
 
     it('create a new user', (done) => {
-      client.flushall();
       const user = {
         username: 'sergkudinov',
         firstname: 'Sergei',
@@ -57,37 +57,36 @@ describe('User', () => {
     before(() => {
       client = require('../src/dbClient')
     })
-
-    beforeEach(function () {
+    
+     after(() => {
       client.flushall();
     })
+
   // TODO Create test for the get method
   // 1. First, create a user to make this unit test independent from the others
+  
       it('Get users', (done) => {
-     const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
-      userController.create(user, (err, result) => {
-        // 2. Then, check if the result of the get method is correct
-        userController.get(user.username, (err, result) => {
-          expect(err).to.be.equal(null)
-          expect(result).to.be.equal(user)
-          done()
-        })
-      })
-    })
-   
-    it('Get a user that doesn\'t exist', (done) => {
       const user = {
         username: 'sergkudinov',
         firstname: 'Sergei',
         lastname: 'Kudinov'
       }
       userController.get(user.username, (err, result) => {
+         expect(err).to.be.equal(null)
+         expect(result).to.include(user)
+          done()
+       })
+    })
+   
+    it('Get a user that doesn\'t exist', (done) => {
+      const user = {
+        username: 'sergkudinove',
+        firstname: 'Sergei',
+        lastname: 'Kudinov'
+      }
+      userController.get(user.username, (err, result) => {
           expect(err).not.to.be.equal(null)
-          expect(result).not.to.be.equal("OK")
+          expect(result).to.be.equal(null)
           done()
       })
     })

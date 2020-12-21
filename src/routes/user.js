@@ -22,7 +22,7 @@ userRouter
     })
   })
   .get('/:username', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
-    userController.get(req.body, (err, res) => {
+    userController.get(req.params.username, (err, res) => {
       let respObj
       if(err) {
         respObj = {
