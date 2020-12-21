@@ -33,6 +33,16 @@ module.exports = {
         })}
     })
   },
+  getAll: (callback) => {
+        client.keys("*", function(err, res) {
+	  const multi = client.multi()
+	  res.forEach(username => multi.hgetall(username))
+          multi.exec(function(err, res){
+	  	if (err) return callback(err, null)
+         	return callback(null, res)
+	  })    
+        })
+  },
    put: (user, callback) => {
     // Check parameters
     if(!user.username)

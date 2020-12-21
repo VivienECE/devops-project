@@ -4,6 +4,18 @@ const { dbsize } = require('../src/dbClient')
 
 let client
 
+const user1 = {
+	username: 'sergkudinov',
+	firstname: 'Sergei',
+	lastname: 'Kudinov'
+}
+
+const user2 = {
+	username: 'viviend',
+	firstname: 'Vivien',
+	lastname: 'Detournay'
+}
+      
 describe('User', () => {
 
   describe('Create', () => {
@@ -12,13 +24,13 @@ describe('User', () => {
       client.flushall();
     })
 
-    it('create a new user', (done) => {
-      const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
-      userController.create(user, (err, result) => {
+    it('create new users', (done) => {
+      userController.create(user1, (err, result) => {
+        expect(err).to.be.equal(null)
+        expect(result).to.be.equal('OK')
+      })
+      
+      userController.create(user2, (err, result) => {
         expect(err).to.be.equal(null)
         expect(result).to.be.equal('OK')
         done()
@@ -38,14 +50,7 @@ describe('User', () => {
     })
 
     it('avoid creating an existing user', (done)=> {
-    //   // TODO create this test
-    //   // Warning: the user already exists
-     const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
-      userController.create(user, (err, result) => {
+      userController.create(user1, (err, result) => {
         expect(err).to.not.be.equal(null)
         expect(result).to.be.equal(null)
         done()
@@ -57,19 +62,11 @@ describe('User', () => {
     before(() => {
       client = require('../src/dbClient')
     })
-    
-  // TODO Create test for the get method
-  // 1. First, create a user to make this unit test independent from the others
-  
-      it('Get users', (done) => {
-      const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
-      userController.get(user.username, (err, result) => {
+   
+      it('Get an user', (done) => {
+      userController.get(user1.username, (err, result) => {
          expect(err).to.be.equal(null)
-         expect(result).to.include(user)
+         expect(result).to.include(user1)
           done()
        })
     })
@@ -84,6 +81,13 @@ describe('User', () => {
           expect(result).to.be.equal(null)
           done()
       })
+    })
+    it('Get all users', (done) => {
+      userController.getAll((err, result) => {
+         expect(err).to.be.equal(null)
+         expect(result).to.deep.include(user1,user2)
+          done()
+       })
     })
   })
   
