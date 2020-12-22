@@ -1,16 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { CookiesProvider } from 'react-cookie';
-import './index.css';
-import App from './App';
-import { Provider as ContextProvider } from './Context';
-import * as serviceWorker from './serviceWorker';
-// Layout
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import theme from './Theme';
-import {
-  BrowserRouter as Router,
-} from "react-router-dom";
 const express = require('express')
 const userRouter = require('./routes/user')
 const employeeRouter = require('./routes/employee')
