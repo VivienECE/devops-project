@@ -1,11 +1,11 @@
 const express = require('express')
-const userController = require('../controllers/user')
+const relationController = require('../controllers/relation')
 
-const userRouter = express.Router()
+const relationRouter = express.Router()
 
-userRouter
+relationRouter
   .post('/', (req, resp) => {
-    userController.create(req.body, (err, res) => {
+    relationController.create(req.body, (err, res) => {
       let respObj
       if(err) {
         respObj = {
@@ -21,8 +21,8 @@ userRouter
       resp.status(201).json(respObj)
     })
   })
-  .get('/:username', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
-    userController.get(req.params.username, (err, res) => {
+  .get('/:id', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
+    relationController.get(req.params.id, (err, res) => {
       let respObj
       if(err) {
         respObj = {
@@ -40,7 +40,7 @@ userRouter
    })
    
    .get('/', (req, resp, next) => {
-    userController.getAll((err, res) => {
+    relationController.getAll((err, res) => {
       let respObj
       if(err) {
         respObj = {
@@ -57,8 +57,8 @@ userRouter
     })
    })
    
-    .put('/:username', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
-    userController.put(req.body, (err, res) => {
+/**    .put('/:id', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
+    relationController.put(req.body, (err, res) => {
       let respObj
       if(err) {
         respObj = {
@@ -73,10 +73,10 @@ userRouter
       }
       resp.status(200).json(respObj)
     })
-   })
+   })**/
    
-   .delete('/:username', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
-    userController.delete(req.params.username, (err, res) => {
+   .delete('/:id', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
+    relationController.delete(req.params.id, (err, res) => {
       let respObj
       if(err) {
         respObj = {
@@ -93,4 +93,4 @@ userRouter
     })
    })
   
-module.exports = userRouter
+module.exports = relationRouter

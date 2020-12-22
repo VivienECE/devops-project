@@ -5,44 +5,35 @@ const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
 let client
-const user1 = {
-       username: 'sergkudinov',
-       firstname: 'Sergei',
-       lastname: 'Kudinov'
-     }
-     
-const user2 = {
-	username: 'viviend',
-	firstname: 'Vivien',
-	lastname: 'Detournay'
+const department1 = {
+	name: 'devops',
+}
+
+const department2 = {
+	name: 'frontend',
 }
      
-describe('User REST API', () => {
+describe('department REST API', () => {
 
   before(() => {
     client = require('../src/dbClient')
   })
-  
-  after(()=> {
-    app.close()
-    client.quit()
-  })
 
-  describe('POST /user', () => {
+  describe('POST /department', () => {
 
-    it('create new users', (done) => {
+    it('create new departments', (done) => {
      
       chai.request(app)
-        .post('/user')
-        .send(user1)
+        .post('/department')
+        .send(department1)
         .then((res) => {
           chai.expect(res).to.have.status(201)
           chai.expect(res.body.status).to.equal('success')
           chai.expect(res).to.be.json
         })
       chai.request(app)
-        .post('/user')
-        .send(user2)
+        .post('/department')
+        .send(department2)
         .then((res) => {
           chai.expect(res).to.have.status(201)
           chai.expect(res.body.status).to.equal('success')
@@ -55,13 +46,13 @@ describe('User REST API', () => {
     })
     
     it('pass wrong parameters', (done) => {
-      const user = {
+      const department = {
         firstname: 'Sergei',
         lastname: 'Kudinov'
       }
       chai.request(app)
-        .post('/user')
-        .send(user)
+        .post('/department')
+        .send(department)
         .then((res) => {
           chai.expect(res).to.have.status(400)
           chai.expect(res.body.status).to.equal('error')
@@ -74,29 +65,29 @@ describe('User REST API', () => {
     })
   })
 
-  describe('GET /user', ()=> {
-    it('get a new user', (done) => {
+  describe('GET /department', ()=> {
+    it('get a new department', (done) => {
       chai.request(app)
-        .get('/user/sergkudinov')
+        .get('/department/devops')
         .then((res) => {
           chai.expect(res).to.have.status(200)
           chai.expect(res.body.status).to.equal('success')
           chai.expect(res).to.be.json
-          chai.expect(res.body.msg).to.include(user1)
+          chai.expect(res.body.msg).to.include(department1)
           done()
         })
         .catch((err) => {
            throw err
         })
     })
-     it('get all users', (done) => {
+     it('get all departments', (done) => {
       chai.request(app)
-        .get('/user/')
+        .get('/department/')
         .then((res) => {
           chai.expect(res).to.have.status(200)
           chai.expect(res.body.status).to.equal('success')
           chai.expect(res).to.be.json
-          chai.expect(res.body.msg).to.deep.include(user1,user2)
+          chai.expect(res.body.msg).to.deep.include(department1,department2)
           done()
         })
         .catch((err) => {
@@ -105,18 +96,18 @@ describe('User REST API', () => {
      })
    })
    
- describe('PUT /user', () => {
+ /**describe('PUT /department', () => {
 
-    it('modify one user', (done) => {
-    const user = {
-       username: 'sergkudinov',
+    it('modify one department', (done) => {
+    const department = {
+       name: 'sergkudinov',
        firstname: 'Serge',
        lastname: 'Kudinoph'
      }
      
       chai.request(app)
-        .put('/user/sergkudinov')
-        .send(user)
+        .put('/department/sergkudinov')
+        .send(department)
         .then((res) => {
           chai.expect(res).to.have.status(200)
           chai.expect(res.body.status).to.equal('success')
@@ -129,14 +120,14 @@ describe('User REST API', () => {
     })
     
     it('pass wrong parameters', (done) => {
-      const user = {
-        username: 'sergkudinoph',
+      const department = {
+        name: 'sergkudinoph',
         firstname: 'Sergei',
         lastname: 'Kudinov'
       }
       chai.request(app)
-        .put('/user/sergkudinoph')
-        .send(user)
+        .put('/department/sergkudinoph')
+        .send(department)
         .then((res) => {
           chai.expect(res).to.have.status(400)
           chai.expect(res.body.status).to.equal('error')
@@ -147,13 +138,13 @@ describe('User REST API', () => {
            throw err
         })
     })
-  })
+  })**/
   
-  describe('DELETE /user', () => {
+  describe('DELETE /department', () => {
 
-    it('delete one user', (done) => {
+    it('delete one department', (done) => {
       chai.request(app)
-        .delete('/user/viviend')
+        .delete('/department/devops')
         .then((res) => {
           chai.expect(res).to.have.status(200)
           chai.expect(res.body.status).to.equal('success')
@@ -165,15 +156,15 @@ describe('User REST API', () => {
         })
     })
     
-    it('delete a non-existent user', (done) => {
-      const user = {
-        username: 'sergkudinoph',
+    it('delete a non-existent department', (done) => {
+      const department = {
+        name: 'sergkudinoph',
         firstname: 'Sergei',
         lastname: 'Kudinov'
       }
       chai.request(app)
-        .delete('/user/sergkudinoph')
-        .send(user)
+        .delete('/department/sergkudinoph')
+        .send(department)
         .then((res) => {
           chai.expect(res).to.have.status(400)
           chai.expect(res.body.status).to.equal('error')
