@@ -212,6 +212,39 @@ const modifyJob = (
     )
   }
 
+  function displayManagerNodeTree(employees){
+    const toreturn = []
+    toreturn.push(employees.map((employee) => { 
+        if(employee.role == "Manager")
+  	return (
+  		<TreeNode label={showEmployee(employee)}>{displayEmployeeNodeTree(employees)}</TreeNode>
+  	)
+   }))
+   return toreturn
+  }
+  
+  function displayEmployeeNodeTree(employees){
+    const toreturn = []
+    toreturn.push(employees.map((employee) => { 
+        if(employee.role == "Employee")
+  	return (
+  		<TreeNode label={showEmployee(employee)}>{displayInternNodeTree(employees)}</TreeNode>
+  	)
+   }))
+   return toreturn
+  }
+  
+   function displayInternNodeTree(employees){
+    const toreturn = []
+    toreturn.push(employees.map((employee) => { 
+        if(employee.role == "Intern")
+  	return (
+  		<TreeNode label={showEmployee(employee)}></TreeNode>
+  	)
+   }))
+   return toreturn
+  }
+  
   console.log(employees)
   let managers = []
   return (
@@ -225,7 +258,7 @@ const modifyJob = (
             lineBorderRadius={'10px'}
             css={styles.styledNode}
             label={showEmployee(emp)}
-          >
+          >{displayManagerNodeTree(employees)}
           </Tree>
           )}})}          
       <div ref={scrollEl} />
