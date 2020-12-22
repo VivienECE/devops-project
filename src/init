@@ -1,0 +1,78 @@
+#!env node
+
+const axios = require('axios')
+var request = require("request");
+const app = require('../src/index')
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const config = {
+  port: 3000
+};
+
+//CLEAR DATABASE
+const client = require('../src/dbClient')
+client.flushall();
+
+//PUSH EMPLOYEE
+(async function() {
+try{
+  await Promise.all([{
+	id: 'sergkudinov',
+	firstname: 'Sergei',
+	lastname: 'Kudinov',
+	email: "sergei.kudinov@adaltas.com",
+      	birth: "11/03/1990",
+      	role: "Manager",
+      	gender: "Male",
+      	department: "devops"
+},{
+	id: 'viviend',
+	firstname: 'Vivien',
+	lastname: 'Detournay',
+	email: "vivien.detournay@adaltas.com",
+      	birth: "12/02/1990",
+      	role: "Intern",
+      	gender: "Male",
+      	department: "devops"
+},{
+	id: 'davidw',
+	firstname: 'David',
+	lastname: 'Worms',
+	email: "david.worms@adaltas.com",
+      	birth: "10/05/1983",
+      	role: "Director",
+      	gender: "Male",
+      	department: "frontend"
+}].map( async (employee) => {
+	 await axios.post(`http://localhost:${config.port}/employee`, (employee))
+  }))
+  //PUSH DEPARTMENT
+  await Promise.all([{
+	name: 'comitte',
+},{
+	name: 'devops',
+},{
+	name: 'frontend',
+}].map( async (department) => {
+	 await axios.post(`http://localhost:${config.port}/department`, (department))
+  }))
+    //PUSH RELATIONS
+    await Promise.all([{
+	id: 'sergkudinovviviend',
+	responsible: 'sergkudinov',
+	employee: 'viviend'
+},{
+	id: 'davidwsergkudinov',
+	responsible: 'davidw',
+	employee: 'sergkudinov'
+}].map( async (relation) => {
+	 await axios.post(`http://localhost:${config.port}/relation`, (relation))
+  }))
+  console.log("Data pushed, server closed")
+  process.exit()
+}catch(err){
+console.log(err)
+process.exit()
+}
+})();
+
