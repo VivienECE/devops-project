@@ -6,12 +6,17 @@ import { Provider as ContextProvider } from './Context';
 import reportWebVitals from './reportWebVitals';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import theme from './Theme';
+import {
+  BrowserRouter as Router,
+} from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <ContextProvider>
       <ThemeProvider theme={theme}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </ThemeProvider>
     </ContextProvider>
   </React.StrictMode>,

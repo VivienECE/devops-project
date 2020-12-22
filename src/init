@@ -1,7 +1,7 @@
 #!env node
 
 const axios = require('axios')
-var request = require("request");
+//var request = require("request");
 const app = require('../src/index')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
@@ -17,32 +17,41 @@ client.flushall();
 (async function() {
 try{
   await Promise.all([{
+	id: 'francoisDebout',
+	firstname: 'Francois',
+	lastname: 'Debout',
+	email: "francois.debout@adaltas.com",
+	birth: "11/03/1980",
+	role: "Director",
+	gender: "Male",
+	department: "devops"
+},{
 	id: 'sergkudinov',
 	firstname: 'Sergei',
 	lastname: 'Kudinov',
 	email: "sergei.kudinov@adaltas.com",
-      	birth: "11/03/1990",
-      	role: "Manager",
-      	gender: "Male",
-      	department: "devops"
+	birth: "11/03/1990",
+	role: "Manager",
+	gender: "Male",
+	department: "devops"
 },{
 	id: 'viviend',
 	firstname: 'Vivien',
 	lastname: 'Detournay',
 	email: "vivien.detournay@adaltas.com",
-      	birth: "12/02/1990",
-      	role: "Intern",
-      	gender: "Male",
-      	department: "devops"
+	birth: "12/02/1990",
+	role: "Intern",
+	gender: "Male",
+	department: "devops"
 },{
 	id: 'davidw',
 	firstname: 'David',
 	lastname: 'Worms',
 	email: "david.worms@adaltas.com",
-      	birth: "10/05/1983",
-      	role: "Director",
-      	gender: "Male",
-      	department: "frontend"
+    birth: "10/05/1983",
+    role: "Director",
+    gender: "Male",
+    department: "frontend"
 }].map( async (employee) => {
 	 await axios.post(`http://localhost:${config.port}/employee`, (employee))
   }))
@@ -58,10 +67,14 @@ try{
   }))
     //PUSH RELATIONS
     await Promise.all([{
+	id:'directordevops',
+	responsible:'francoisDebout',
+	employee:'sergkudinov'
+	},{
 	id: 'sergkudinovviviend',
 	responsible: 'sergkudinov',
 	employee: 'viviend'
-},{
+	},{
 	id: 'davidwsergkudinov',
 	responsible: 'davidw',
 	employee: 'sergkudinov'

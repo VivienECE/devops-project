@@ -1,12 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-//import axios from 'axios';
+import axios from 'axios';
 import React, { useContext, useEffect, useState} from 'react';
 import Context from './Context'
 import { useTheme } from '@material-ui/core/styles';
 import {useHistory} from 'react-router-dom'
 import { useScrollTrigger } from '@material-ui/core';
+import Input from '@material-ui/core/Input';
+//import CreateIcon from '@material-ui/icons/Create';
+import {Button} from '@material-ui/core';
+import Modal from '@material-ui/core/Modal';
 
 const useStyles = (theme) => ({
 departments: {
@@ -37,36 +41,95 @@ departments: {
     
     'list-style-type': 'none', 
   },
+  modal:{
+    border: 'none',
+    backgroundColor:'#f1f0ea',
+    display: 'flex',
+    position: 'relative',
+    top: '5%',
+    padding:'1em',
+    display: 'table',
+    textAlign : 'center',
+    margin:'auto',
+    '& form':{
+      padding:'2em',
+    },
+    '& fieldset': {
+          border: 'none',
+          marginBottom:'10px',
+          '& label': {
+            marginBottom: theme.spacing(.5),
+            display: 'block',
+          },
+          '& Input':{
+            width:'200px',
+            paddingLeft: '20px',
+            margin:'2px'
+            },
+        },
+  },
 })
 
 export default () => {
-  //const {departments, setDepartments} = useContext(Context)
+  const {departments, setDepartments} = useContext(Context)
   const history = useHistory();
   const styles = useStyles(useTheme())
-  /*useEffect( () => {
+  useEffect( () => {
     const fetch = async () => {
       try{
-        const {data: departments} = await axios.put('http://localhost:3001/departments')
-        setDepartments(departments)
+        const {data: departments} = await axios.get('http://localhost:3000/department')
+        setDepartments(departments.msg)
       }catch(err){
         console.error(err)
       }
     }
-  }, [setDepartments])*/
- const departments = [{name: 'Directorate'}, 
- {name: 'Financial'}, 
- {name: 'Human Ressources'},
- {name: 'IT'},
- {name: 'Marketing'}]
+    fetch()
+  }, [setDepartments])
+  
+  const [openModal, setOpenModal] = useState(false); 
+  const handleOpenModal = () => { 
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => { 
+    setOpenModal(false);
+  };
+  const [name, setName] = useState('')
+  const handleChangeName = (e) => {
+    setName(e.target.value)
+  }
+
+const addDepartment = (
+  <div align="center" css={styles.modal}>
+    <h2>Add a department</h2>
+    <fieldset> 
+      Name
+      <Input  value={name} onChange={handleChangeName} inputProps={{ 'aria-label': 'description' }} required/>
+    </fieldset>
+      <Button color="inhirit" variant='contained' style={{marginRight:'15px'}} onClick={handleCloseModal}>
+          Cancel
+      </Button>
+      <Button color="secondary" variant='contained' type="submit" onClick={async () => {
+        axios.post(`http://localhost:3000/department`, {
+        name: name
+      })
+      setName('')
+      setOpenModal(false);
+      window.reload()
+    }}>
+          Validate
+      </Button>
+  </div> 
+);
   return (
-    <ul style={styles.departments}>
+    <div>
+      <ul style={styles.departments}>
       { departments.map( (department, i) => (
         <li key={i} css={styles.department}>
           <button
-            //href={`/departments/${department.id}`}
+            href={`/department/${department.name}`}
             onClick={ (e) => {
               e.preventDefault()
-              //history.push(`/departments/${department.id}`)
+              history.push(`/department/${department.name}`)
             }}
           >
             {department.name}
@@ -74,5 +137,10 @@ export default () => {
         </li>
       ))}
     </ul>
+    <Button color="secondary" variant='contained' onClick={handleOpenModal}>Add a department</Button>
+    <Modal open={openModal} onClose={handleCloseModal}>
+      {addDepartment}
+    </Modal>
+  </div>
   );
 }

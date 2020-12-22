@@ -1,5 +1,5 @@
 import {useContext, useRef, useState} from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
@@ -8,7 +8,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // Local
-//import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {Button} from '@material-ui/core'
 import Input from '@material-ui/core/Input';
@@ -60,81 +60,93 @@ const useStyles = (theme) => ({
 
 export default () => {
   
-  //const history = useHistory()
-  //const { id } = useParams()
+  const history = useHistory()
+  const { name } = useParams()
   const styles = useStyles(useTheme())
   const {departments, setDepartments} = useContext(Context)
-  const {employees, setEmployees} = useState([])
+  const [employees, setEmployees] = useState([])
   const listRef = useRef()
-  const departmentId = useRef()
+  const departmentName = useRef()
   //const [messages, setMessages] = useState([])
   const [scrollDown, setScrollDown] = useState(false)
-  /*const fetchDepartments = async () => {
+  /*
+  const fetchDepartments = async () => {
     try{
-      const {data: departments} = await axios.put('http://localhost:3001/departments')
-      setChannels(departments)
+      const {data: departments} = await axios.get('http://localhost:3000/department')
     }catch(err){
       console.error(err)
     }
   }
-  const department = departments.find( department => department.id === id)
-  const [employees, setEmployees] = useState([])
-  const fetchEmployees = async () => {
-    setEmployees([])
-    const {data: employees} = await axios.get(`http://localhost:3001/department/${department.id}/employees`)
-    setEmployees(employees)
-  }
-  if(!department) {
-    history.push('/')
-    return <div/>
-  }
-  
-  if(departmentId.current !== department.id){
-    departmentsId.current = department.id
-  }*/
+  if(!departments)
+    fetchDepartments()*/
+  if(name){
+    const department = departments.find( department => department.name === name)
+    if(!department) {
+      history.push('/')
+      return <div/>
+    }
+    
 
-  const department={name: 'Directorate'}
-  const onScrollDown = (scrollDown) => {
-    setScrollDown(scrollDown)
-  }
-  const onClickScroll = () => {
-    listRef.current.scroll()
-  }
-  
-  //Add an employee
-  const [openAdd, setOpenAdd] = useState(false); 
-  const handleOpenAdd = () => { 
-    setOpenAdd(true);
-    console.log('open')
-  };
-  const handleCloseAdd = () => { 
-    setOpenAdd(false);
-  };
-  
-  const newEmployee = (
-        <div align="center" css={styles.modal}>
-            <CreateEmployee />
-        </div> 
-  );
+    const fetchEmployees = async (department) => {
+      const {data: employees} = await axios.get(`http://localhost:3000/department/${department.name}/employees`)
+      setEmployees(employees.msg)
+    }
+    
+    if(employees.length===0){
+      fetchEmployees(department)
+    }
+      
+    
+    
+    if(departmentName.current !== department.name){
+      fetchEmployees(department)
+      departmentName.current = department.name
+    }
 
+    const onScrollDown = (scrollDown) => {
+      setScrollDown(scrollDown)
+    }
+    const onClickScroll = () => {
+      listRef.current.scroll()
+    }
+    
+    //Add an employee
+    const [openAdd, setOpenAdd] = useState(false); 
+    const handleOpenAdd = () => { 
+      setOpenAdd(true);
+      console.log('open')
+    };
+    const handleCloseAdd = () => { 
+      setOpenAdd(false);
+    };
+    
+    const newEmployee = (
+          <div align="center" css={styles.modal}>
+              <CreateEmployee />
+          </div> 
+    );
 
-  return (
-    <div css={styles.root}>
-      <div css={styles.top}>
-        <Button onClick={handleOpenAdd} style={{ float: 'right' }}>
-          <PersonAddIcon fontSize="large" style={{ color: '#5a94af' }}/>
-        </Button>
-        <Modal open={openAdd} onClose={handleCloseAdd}>
-          {newEmployee}
-        </Modal>
-        <h2>{department.name}</h2>
+    console.log(department.name)
+    console.log(employees)
+    return (
+      <div css={styles.root}>
+        <div css={styles.top}>
+          <Button onClick={handleOpenAdd} style={{ float: 'right' }}>
+            <PersonAddIcon fontSize="large" style={{ color: '#5a94af' }}/>
+          </Button>
+          <Modal open={openAdd} onClose={handleCloseAdd}>
+            {newEmployee}
+          </Modal>
+          <h2>{department.name}</h2>
+        </div>
+        <Tree
+          department={department}
+          employees={employees}
+          onScrollDown={onScrollDown}
+          ref={listRef}
+        />
       </div>
-      <Tree
-        department={department}
-        employees={employees}
-        onScrollDown={onScrollDown}
-        ref={listRef}
-      />
-    </div>
-  );
+    );
+  }
+  
 }

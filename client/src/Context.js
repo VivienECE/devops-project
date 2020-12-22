@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 //import { useCookies } from 'react-cookie'
-//import axios from 'axios';
+import axios from 'axios';
 
 const Context = React.createContext()
 
@@ -13,31 +13,31 @@ export const Provider = ({
   //const [oauth, setOauth] = useState(cookies.oauth)
   //const [currentUser, setCurrentUser] = useState(null)
   const [drawerVisible, setDrawerVisible] = useState(false)
-  //const [departments, setDepartments] = useState([])
-  //const [currentDepartment, setCurrentDepartment] = useState(null)
-  //const [employee, setEmployees] = useState([])
+  const [departments, setDepartments] = useState([])
+  const [currentDepartment, setCurrentDepartment] = useState(null)
+  const [employee, setEmployees] = useState([])
 
-  /*const fetchDepartment = async () => {
+  const fetchDepartment = async () => {
     try{
-      const {data: departments} = await axios.put('http://localhost:3001/Departments')
-      setChannels(departments)
+      const {data: departments} = await axios.put('http://localhost:3000/Departments')
+      setDepartments(departments)
     }catch(err){
       console.error(err)
     }
-  }*/
+  }
   
   return (
     <Context.Provider value={{
-      //departments: departments,
+      departments: departments,
       drawerVisible: drawerVisible,
       setDrawerVisible: setDrawerVisible,
-      /*setDepartments: setDepartments,
+      setDepartments: setDepartments,
       currentDepartment: currentDepartment,
       setCurrentDepartment:  (departmentId) => {
         const department = departments.find( department => department.id === departmentId)
-        setCurrentChannel(department)
+        setCurrentDepartment(department)
       },
-      fetchDepartments : fetchDepartment,*/
+      fetchDepartments : fetchDepartment,
     }}>{children}</Context.Provider>
   )
 }

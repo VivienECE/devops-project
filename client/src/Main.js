@@ -9,6 +9,7 @@ import React, { useContext } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Departments from './Departments'
 import Department from './Department'
+import Welcome from './Welcome'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -55,7 +56,15 @@ export default () => {
         > 
             <Departments />
         </Drawer>
-            <Department />
+        <Switch>
+          <Route path="/department/:name">
+             <Department />
+          </Route>
+          <Route path="/">
+            <Welcome />
+          </Route>
+        </Switch>
+           
       </main>
     );
 }

@@ -18,7 +18,7 @@ import Input from '@material-ui/core/Input';
 import Modal from '@material-ui/core/Modal';
 import Context from './Context'
 import {useContext} from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import { Tree, TreeNode } from 'react-organizational-chart';
 import Man from './man.png';
@@ -83,7 +83,6 @@ export default forwardRef(({
   onScrollDown,
 }, ref) => {
   const styles = useStyles(useTheme())
-  //const {oauth, setOauth,currentUser} = useContext(Context)
 
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
@@ -171,60 +170,64 @@ const modifyJob = (
   })*/
   setOpenDel(false);
   window.location.reload()
-}
-const deleteEmployee = (
-  <div align="center" css={styles.modal}>
-    <h2>Do you really want to dismiss this employee?</h2>
-      <Button color="inhirit" variant='contained' style={{marginRight:'15px'}} onClick={handleCloseDel}>
-          Cancel
-      </Button>
-      <Button style={{backgroundColor:'red', color:'white'}} variant='contained' type="submit" onClick={onSubmitDel}>
-          Dismiss
-      </Button>
-  </div> 
-);
+  }
+  const deleteEmployee = (
+    <div align="center" css={styles.modal}>
+      <h2>Do you really want to dismiss this employee?</h2>
+        <Button color="inhirit" variant='contained' style={{marginRight:'15px'}} onClick={handleCloseDel}>
+            Cancel
+        </Button>
+        <Button style={{backgroundColor:'red', color:'white'}} variant='contained' type="submit" onClick={onSubmitDel}>
+            Dismiss
+        </Button>
+    </div> 
+  );
 
-  const showEmployee = () => {
+  const showEmployee = (employee) => {
     return(
     <div css={styles.card}>
         <img src={Man} width="50" height="50"/>
-        <h5>James DILLON <br/>MANAGER</h5>
+        <h5>{employee.firstname} {employee.lastname} <br/>{employee.role}</h5>
         <Button variant="contained" size="small" color="secondary" onClick={handleOpenModify} style={{marginRight:'10px'}}>Upgrade</Button>
-        <Modal open={openModify} onClose={handleCloseModify}>
+        <Modal css={styles.modal} open={openModify} onClose={handleCloseModify}>
           {modifyJob}
         </Modal>
         <Button variant="contained" size="small" color="primary" onClick={handleOpenDel}>Dismiss</Button>
-        <Modal open={openDel} onClose={handleCloseDel}>
+        <Modal css={styles.modal} open={openDel} onClose={handleCloseDel}>
           {deleteEmployee}
         </Modal>
     </div>
     )
   }
-  
+  const findManagers = async (director) =>{
+    const {data: managers} = await axios.get(`http://localhost:3000/relation/responsible/${director.id}`)
+    return (
+      <div>
+        {managers.msg.map((man) => {
+          return(
+            <TreeNode label={showEmployee(man)}></TreeNode>
+          )
+      })}
+      </div>
+    )
+  }
 
+  console.log(employees)
+  let managers = []
   return (
     <div css={styles.root} ref={rootEl}>
-      <Tree
-        lineWidth={'3px'}
-        lineColor={'rgb(204,204,204)'}
-        lineBorderRadius={'10px'}
-        css={styles.styledNode}
-        label={showEmployee()}
-      >
-        <TreeNode label={showEmployee()}>
-          <TreeNode label={showEmployee()} />
-        </TreeNode>
-        <TreeNode label={showEmployee()}>
-          <TreeNode label={showEmployee()}>
-            <TreeNode label={showEmployee()} />
-            <TreeNode label={showEmployee()} />
-          </TreeNode>
-        </TreeNode>
-        <TreeNode label={showEmployee()}>
-          <TreeNode label={showEmployee()} />
-          <TreeNode label={showEmployee()} />
-        </TreeNode>
-      </Tree>
+      {employees.map((emp) => {
+        if(emp.role==='Director'){
+          return(
+          <Tree
+            lineWidth={'3px'}
+            lineColor={'rgb(204,204,204)'}
+            lineBorderRadius={'10px'}
+            css={styles.styledNode}
+            label={showEmployee(emp)}
+          >
+          </Tree>
+          )}})}          
       <div ref={scrollEl} />
     </div>
   )
