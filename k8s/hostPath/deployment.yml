@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-host-path
+  labels:
+    app: redis-host-path
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-host-path
+  template:
+    metadata:
+      labels:
+        app: redis-host-path
+    spec:
+      volumes:
+      - name: my-hostpath
+        hostPath:
+          path: /mnt/si01
+          type: DirectoryOrCreate
+      containers:
+      - name: redis-container
+        image: redis
+        ports:
+          - containerPort: 3000
+            name: "http-server"
+        volumeMounts:
+        - name: my-hostpath
+          mountPath: /usr/share/redis/js

@@ -24,13 +24,9 @@ module.exports = {
     })
   },
   get: (username, callback) => {
-    client.exists(user.username, function(err, res){
-      if (res==0) 
-        return callback(new Error("User doesn't exist"), null)
-      else{
-        client.get(username, function(err, res) {
-          console.log(res);
-        })}
+    client.hmget(username, firstname, lastname, (err, res) =>{
+      if(err) return callback(new Error("User doesn't exist"), null)
+      callback(null, res) // Return callback
   })
   }
 }

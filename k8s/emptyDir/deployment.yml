@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-empty-dir
+  labels:
+    app: redis-empty-dir
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-empty-dir
+  template:
+    metadata:
+      labels:
+        app: redis-empty-dir
+    spec:
+      volumes:
+      - name: my-emptydir
+        emptyDir: {}
+      containers:
+      - name: redis-container
+        image: redis
+        ports:
+          - containerPort: 3000
+            name: "http-server"
+        volumeMounts:
+        - name: my-emptydir
+          mountPath: /usr/share/redis/jd
