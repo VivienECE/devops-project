@@ -38,12 +38,41 @@ const employee3 = {
       	department: "frontend"
 }
 
+const employee4 = {
+	id: 'clemencej',
+	firstname: 'Clemence',
+	lastname: 'Jean-Louis Dit Montout',
+	email: "clemence.jldm@adaltas.com",
+      	birth: "11/03/1999",
+      	role: "Intern",
+      	gender: "Woman",
+      	department: "devops"
+}
+
 const department1 = {
 	name: 'devops',
 }
 
 const department2 = {
 	name: 'frontend',
+}
+
+const relation1 = {
+	id: 'sergkudinovviviend',
+	responsible: 'sergkudinov',
+	employee: 'viviend'
+}
+
+const relation2 = {
+	id: 'davidwsergkudinov',
+	responsible: 'davidw',
+	employee: 'sergkudinov'
+}
+
+const relation3 = {
+	id: 'sergkudinovclemencej',
+	responsible: 'sergkudinov',
+	employee: 'clemencej'
 }
      
 describe('employee REST API', () => {
@@ -66,6 +95,14 @@ describe('employee REST API', () => {
         })
       chai.request(app)
         .post('/employee')
+        .send(employee2)
+        .then((res) => {
+          chai.expect(res).to.have.status(201)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+        })
+      chai.request(app)
+        .post('/employee')
         .send(employee3)
         .then((res) => {
           chai.expect(res).to.have.status(201)
@@ -74,7 +111,7 @@ describe('employee REST API', () => {
         })
       chai.request(app)
         .post('/employee')
-        .send(employee2)
+        .send(employee4)
         .then((res) => {
           chai.expect(res).to.have.status(201)
           chai.expect(res.body.status).to.equal('success')
@@ -176,6 +213,57 @@ describe('employee REST API', () => {
            throw err
         })
      })
+     
+       it('create new relations', (done) => {
+     
+      chai.request(app)
+        .post('/relation')
+        .send(relation1)
+        .then((res) => {
+          chai.expect(res).to.have.status(201)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+        })
+        chai.request(app)
+        .post('/relation')
+        .send(relation2)
+        .then((res) => {
+          chai.expect(res).to.have.status(201)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+        })
+      chai.request(app)
+        .post('/relation')
+        .send(relation3)
+        .then((res) => {
+          chai.expect(res).to.have.status(201)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+          done()
+        })
+        .catch((err) => {
+           throw err
+           done()
+        })
+    })
+      
+        it('get all employees of 1 responsible', (done) => {
+      chai.request(app)
+        .get('/relation/responsible/sergkudinov')
+        .then((res) => {
+          chai.expect(res).to.have.status(200)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+          chai.expect(res.body.msg).to.deep.include(employee4,employee2)
+          chai.expect(res.body.msg).to.not.deep.include(employee3)
+          done()
+        })
+        .catch((err) => {
+           throw err
+           done()
+        })
+     })
+    
    })
    
  describe('PUT /employee', () => {
@@ -203,6 +291,7 @@ describe('employee REST API', () => {
         })
         .catch((err) => {
            throw err
+           done()
         })
     })
     

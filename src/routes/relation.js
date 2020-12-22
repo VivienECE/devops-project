@@ -38,6 +38,36 @@ relationRouter
       resp.status(200).json(respObj)
     })
    })
+    .get('/responsible/:responsibleId', (req, resp, next) => {
+    relationController.getAll((err, res) => {
+      let respObj
+      if(err) {
+        respObj = {
+          status: "error",
+          msg: err.message
+        }
+        return resp.status(400).json(respObj)
+      }
+      respObj = {
+        status: "success",
+        msg: res
+      }
+      relationController.getEmployeesOfResponsible(req.params.responsibleId, respObj.msg, (err, res) => {
+	    if(err) {
+	        respObj = {
+		  status: "error",
+		  msg: err.message
+		}
+		return resp.status(400).json(respObj)
+	      }
+	      respObj = {
+		status: "success",
+		msg: res
+	      }
+	      resp.status(200).json(respObj)
+	  })
+     })
+    })
    
    .get('/', (req, resp, next) => {
     relationController.getAll((err, res) => {

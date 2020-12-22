@@ -33,6 +33,17 @@ module.exports = {
         })}
     })
   },
+  getEmployeesOfResponsible: (responsible, relations, callback) => {
+      const multi = client.multi()
+      function findEmployees(relation){
+	  	if (relation.responsible == responsible)   
+	  		multi.hgetall("employee:"+relation.employee)}
+      relations.forEach(findEmployees)
+      multi.exec(function(err, res){
+      if (err) return callback(err, null)
+      return callback(null, res)
+   })    
+  },
   delete: (id, callback) => {
     if(!id) return callback(new Error("Wrong relation parameters"), null)
     client.exists("relation:"+id, function(err, res){

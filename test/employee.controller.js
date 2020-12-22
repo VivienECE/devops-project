@@ -1,6 +1,7 @@
 const { expect } = require('chai')
 const employeeController = require('../src/controllers/employee')
 const departmentController = require('../src/controllers/department')
+const relationController = require('../src/controllers/relation')
 const { dbsize } = require('../src/dbClient')
 
 let client
@@ -37,12 +38,42 @@ const employee3 = {
       	gender: "Male",
       	department: "frontend"
 }
+
+const employee4 = {
+	id: 'clemencej',
+	firstname: 'Clemence',
+	lastname: 'Jean-Louis Dit Montout',
+	email: "clemence.jldm@adaltas.com",
+      	birth: "11/03/1999",
+      	role: "Intern",
+      	gender: "Woman",
+      	department: "devops"
+}
+
 const department1 = {
 	name: 'devops',
 }
 
 const department2 = {
 	name: 'frontend',
+}
+
+const relation1 = {
+	id: 'sergkudinovviviend',
+	responsible: 'sergkudinov',
+	employee: 'viviend'
+}
+
+const relation2 = {
+	id: 'davidwsergkudinov',
+	responsible: 'davidw',
+	employee: 'sergkudinov'
+}
+
+const relation3 = {
+	id: 'sergkudinovclemencej',
+	responsible: 'sergkudinov',
+	employee: 'clemencej'
 }
       
 describe('employee', () => {
@@ -60,6 +91,11 @@ describe('employee', () => {
       })
       
       employeeController.create(employee2, (err, result) => {
+        expect(err).to.be.equal(null)
+        expect(result).to.be.equal('OK')
+      })
+      
+      employeeController.create(employee4, (err, result) => {
         expect(err).to.be.equal(null)
         expect(result).to.be.equal('OK')
       })
@@ -123,7 +159,7 @@ describe('employee', () => {
           done()
        })
     })
-    it('Preparation 2:Create department  -> get all employees of 1 department ', (done) => {
+    it('Preparation 1:Create department  -> get all employees of 1 department ', (done) => {
         departmentController.create(department1, (err, result) => {
         expect(err).to.be.equal(null)
         expect(result).to.be.equal('OK')
@@ -152,6 +188,44 @@ describe('employee', () => {
       departmentController.getEmployees("devops", employees, (err, result) => {
          expect(err).to.be.equal(null)
          expect(result).to.deep.include(employee1,employee2)
+          done()
+       })
+    })
+    
+     it('Preparation 1:Create relations', (done) => {
+       relationController.create(relation1, (err, result) => {
+        expect(err).to.be.equal(null)
+        expect(result).to.be.equal('OK')
+        })
+        
+        relationController.create(relation3, (err, result) => {
+        expect(err).to.be.equal(null)
+        expect(result).to.be.equal('OK')
+        })
+      
+       relationController.create(relation2, (err, result) => {
+         expect(err).to.be.equal(null)
+         expect(result).to.be.equal('OK')
+         done()
+       })
+     })
+    
+     it('Preparation 2:Get relations', (done) => {
+       relationController.get(relation1.id, (err, result) => {
+         expect(err).to.be.equal(null)
+         expect(result).to.include(relation1)
+          done()
+       })
+    })
+    
+     it('Get all employees of 1 responsible/manager', (done) => {
+     const relations = []
+     relations.push(relation1)
+     relations.push(relation2)
+     relations.push(relation3)
+      relationController.getEmployeesOfResponsible("sergkudinov", relations, (err, result) => {
+         expect(err).to.be.equal(null)
+         expect(result).to.deep.include(employee2,employee4)
           done()
        })
     })
