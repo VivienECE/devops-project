@@ -13,7 +13,8 @@ module.exports = {
       email: employee.email,
       birth: employee.birth,
       role: employee.role,
-      gender: employee.gender
+      gender: employee.gender,
+      department: employee.department
     }
     client.exists("employee:"+employee.id, function(err, res){
       if (res==1) 

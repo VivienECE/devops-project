@@ -11,7 +11,8 @@ const employee1 = {
 	email: "sergei.kudinov@adaltas.com",
       	birth: "11/03/1990",
       	role: "Manager",
-      	gender: "Male"
+      	gender: "Male",
+      	department: "devops"
 }
 
 const employee2 = {
@@ -21,7 +22,8 @@ const employee2 = {
 	email: "vivien.detournay@adaltas.com",
       	birth: "12/02/1990",
       	role: "Intern",
-      	gender: "Male"
+      	gender: "Male",
+      	department: "devops"
 }
       
 describe('employee', () => {
