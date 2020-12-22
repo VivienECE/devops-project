@@ -1,5 +1,6 @@
 const express = require('express')
 const departmentController = require('../controllers/department')
+const employeeController = require('../controllers/employee')
 
 const departmentRouter = express.Router()
 
@@ -36,6 +37,37 @@ departmentRouter
         msg: res
       }
       resp.status(200).json(respObj)
+    })
+   })
+   
+   .get('/:name/employees', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
+   employeeController.getAll((err, res) => {
+      let respObj
+      if(err) {
+        respObj = {
+          status: "error",
+          msg: err.message
+        }
+        return resp.status(400).json(respObj)
+      }
+      respObj = {
+        status: "success",
+        msg: res
+      }
+      departmentController.getEmployees(req.params.name, respObj.msg, (err, res) => {
+	  if(err) {
+		respObj = {
+		  status: "error",
+		  msg: err.message
+          	}
+	        return resp.status(400).json(respObj)
+	  }
+	  respObj = {
+	     status: "success",
+	     msg: res
+	  }
+	  resp.status(200).json(respObj)
+      })
     })
    })
    

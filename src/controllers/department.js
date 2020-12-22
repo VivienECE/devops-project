@@ -31,6 +31,28 @@ module.exports = {
         })}
     })
   },
+  
+  getEmployees: (name, employees, callback) => {
+    client.exists("department:"+name, function(err, res){
+      if (res==0) return callback(new Error("department doesn't exist in database"), null)
+
+	  const multi = client.multi()
+	  function inDepartment(employee){
+	  	if (employee.department == name)
+	        {
+	  		multi.hgetall("employee:"+employee.id)
+	  		console.log(employee.id)
+	  	}
+	  }
+          employees.forEach(inDepartment)
+	  //res.forEach(id => multi.hgetall(id))
+          multi.exec(function(err, res){
+	  	if (err) return callback(err, null)
+         	return callback(null, res)
+	  })    
+     })
+  },
+  
   delete: (name, callback) => {
     if(!name) return callback(new Error("Wrong department parameters"), null)
     client.exists("department:"+name, function(err, res){

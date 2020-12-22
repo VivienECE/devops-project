@@ -59,6 +59,8 @@ module.exports = {
 	  })    
         })
   },
+  
+  
    put: (employee, callback) => {
     // Check parameters
     if(!employee.id)
@@ -68,6 +70,11 @@ module.exports = {
       id: employee.id,
       firstname: employee.firstname,
       lastname: employee.lastname,
+      email: employee.email,
+      birth: employee.birth,
+      role: employee.role,
+      gender: employee.gender,
+      department: employee.department
     }
     client.exists("employee:"+employee.id, function(err, res){
       if (res==0) 

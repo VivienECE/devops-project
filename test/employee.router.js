@@ -26,6 +26,25 @@ const employee2 = {
       	gender: "Male",
       	department: "devops"
 }
+
+const employee3 = {
+	id: 'davidw',
+	firstname: 'David',
+	lastname: 'Worms',
+	email: "david.worms@adaltas.com",
+      	birth: "10/05/1983",
+      	role: "Director",
+      	gender: "Male",
+      	department: "frontend"
+}
+
+const department1 = {
+	name: 'devops',
+}
+
+const department2 = {
+	name: 'frontend',
+}
      
 describe('employee REST API', () => {
 
@@ -40,6 +59,14 @@ describe('employee REST API', () => {
       chai.request(app)
         .post('/employee')
         .send(employee1)
+        .then((res) => {
+          chai.expect(res).to.have.status(201)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+        })
+      chai.request(app)
+        .post('/employee')
+        .send(employee3)
         .then((res) => {
           chai.expect(res).to.have.status(201)
           chai.expect(res.body.status).to.equal('success')
@@ -79,6 +106,7 @@ describe('employee REST API', () => {
     })
   })
 
+
   describe('GET /employee', ()=> {
     it('get a new employee', (done) => {
       chai.request(app)
@@ -108,16 +136,61 @@ describe('employee REST API', () => {
            throw err
         })
      })
+     
+      it('create new departments', (done) => {
+     
+      chai.request(app)
+        .post('/department')
+        .send(department1)
+        .then((res) => {
+          chai.expect(res).to.have.status(201)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+        })
+      chai.request(app)
+        .post('/department')
+        .send(department2)
+        .then((res) => {
+          chai.expect(res).to.have.status(201)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+          done()
+        })
+        .catch((err) => {
+           throw err
+        })
+    })
+    
+     it('get all employees in 1 department', (done) => {
+      chai.request(app)
+        .get('/department/devops/employees')
+        .then((res) => {
+          chai.expect(res).to.have.status(200)
+          chai.expect(res.body.status).to.equal('success')
+          chai.expect(res).to.be.json
+          chai.expect(res.body.msg).to.deep.include(employee1,employee2)
+          chai.expect(res.body.msg).to.not.deep.include(employee3)
+          done()
+        })
+        .catch((err) => {
+           throw err
+        })
+     })
    })
    
  describe('PUT /employee', () => {
 
     it('modify one employee', (done) => {
     const employee = {
-       id: 'sergkudinov',
-       firstname: 'Serge',
-       lastname: 'Kudinoph'
-     }
+	id: 'sergkudinov',
+	firstname: 'Sergei',
+	lastname: 'Kudinov',
+	email: "sergei.kudinov@adaltas.com",
+      	birth: "11/03/1990",
+      	role: "Director",
+      	gender: "Male",
+      	department: "devops"
+    }
      
       chai.request(app)
         .put('/employee/sergkudinov')
