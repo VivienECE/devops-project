@@ -11,12 +11,12 @@ module.exports = {
       firstname: user.firstname,
       lastname: user.lastname,
     }
-    client.exists(user.username, function(err, res){
+    client.exists("user:"+user.username, function(err, res){
       if (res==1) 
         return callback(new Error("Warning: the user already exists"), null)
       else{
         // Save to DB
-        client.hmset(user.username, userObj, (err, res) => {
+        client.hmset("user:"+user.username, userObj, (err, res) => {
         if (err) return callback(err, null)
         return callback(null, res) // Return callback
       })}
@@ -24,10 +24,10 @@ module.exports = {
   },
   get: (username, callback) => {
     if(!username) return callback(new Error("Wrong user parameters"), null)
-    client.exists(username, function(err, res){
+    client.exists("user:"+username, function(err, res){
       if (res==0) return callback(new Error("User doesn't exist in database"), null)
       else{
-        client.hgetall(username, function(err, res) {
+        client.hgetall("user:"+username, function(err, res) {
           if (err) return callback(err, null)
           return callback(null, res)
         })}
@@ -35,17 +35,17 @@ module.exports = {
   },
   delete: (username, callback) => {
     if(!username) return callback(new Error("Wrong user parameters"), null)
-    client.exists(username, function(err, res){
+    client.exists("user:"+username, function(err, res){
       if (res==0) return callback(new Error("User doesn't exist in database"), null)
       else{
-        client.del(username, function(err, res) {
+        client.del("user:"+username, function(err, res) {
           if (err) return callback(err, null)
           return callback(null, res)
         })}
     })
   },
   getAll: (callback) => {
-        client.keys("*", function(err, res) {
+        client.keys("user:*", function(err, res) {
 	  const multi = client.multi()
 	  res.forEach(username => multi.hgetall(username))
           multi.exec(function(err, res){
@@ -64,12 +64,12 @@ module.exports = {
       firstname: user.firstname,
       lastname: user.lastname,
     }
-    client.exists(user.username, function(err, res){
+    client.exists("user:"+user.username, function(err, res){
       if (res==0) 
        return callback(new Error("Warning: the user already exists"), null)
       else{
         // Save to DB
-        client.hmset(user.username, userObj, (err, res) => {
+        client.hmset("user:"+user.username, userObj, (err, res) => {
         if (err) return callback(err, null)
         return callback(null, res) // Return callback
       })}
