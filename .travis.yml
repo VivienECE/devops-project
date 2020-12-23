@@ -6,7 +6,7 @@ services:
 - redis-server
 script:
 - echo 'Starting'
-- npm --prefix backend install
+- npm -prefix backend install
 - echo 'Testing'
 - npm -prefix backend test
 deploy:
@@ -16,4 +16,4 @@ deploy:
  app: devops-app
  on:
   repo: vivienece/devops-project/backend
-echo
+
