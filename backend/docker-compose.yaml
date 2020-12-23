@@ -12,9 +12,11 @@ services:
   app:
     build: .
     ports:
-     - "3001:3001"
+     - "3000:3000"
+    command: ["node", "src/init"]
     environment:
      - REDIS_HOST=redis-server
+     - INIT_BACKEND=true
     networks:
       - redis-net
     depends_on:

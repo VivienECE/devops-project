@@ -116,8 +116,13 @@ try{
 }].map( async (relation) => {
 	 await axios.post(`http://localhost:${config.port}/relation`, (relation))
   }))
-  console.log("Data pushed, server closed")
-  process.exit()
+  
+  if(!process.env.INIT_BACKEND)
+  {
+  	console.log("Data pushed, server closed")
+  	process.exit()
+  }
+  console.log("Initialization done")
 }catch(err){
 console.log(err)
 process.exit()
