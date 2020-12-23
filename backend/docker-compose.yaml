@@ -3,19 +3,18 @@ services:
   redis:
     image: redis:latest
     command: ["redis-server", "--bind", "redis", "--port", "6379"]
-    hostname: redis
+    hostname: redis-server
     networks:
      - redis-net
-    volumes:
-     - redis-data:/data
+    ports:
+     - "6379:6379"
      
   app:
     build: .
-    environment:
-      - NODE_ENV=production
-      - RHOST=redis
     ports:
      - "3001:3001"
+    environment:
+     - REDIS_HOST=redis-server
     networks:
       - redis-net
     depends_on:
@@ -24,6 +23,8 @@ services:
 networks:
  redis-net:
   driver: bridge
+  
+      
+  
  
-volumes:
- redis-data:
+ 

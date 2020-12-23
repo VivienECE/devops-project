@@ -3,9 +3,11 @@ const configure = require('./configure')
 
 const config = configure()
 var client = redis.createClient({
-  host: config.redis.host,
+  host: process.env.REDIS_HOST || config.redis.host,
   port: config.redis.port,
   retry_strategy: () => {
+    console.log(process.env.REDIS_HOST || config.redis.host)
+    console.log(config.redis.port)
     return new Error("Retry time exhausted")
   }
 })
