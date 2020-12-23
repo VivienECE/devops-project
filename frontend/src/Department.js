@@ -98,8 +98,7 @@ export default () =>  {
       departmentName.current = department.name
     }
 
-  /**fEmployees(department).then(result => {
-  }).catch(err => {});**/
+
     return (
       <div css={styles.root}>
         <div css={styles.top}>

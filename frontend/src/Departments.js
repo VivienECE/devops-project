@@ -77,20 +77,31 @@ export default () => {
   
    function getEmployees(){
        return new Promise(function(resolve){
-             const employees = []
-          axios.get(`http://localhost:3000/employee`)
-         .then(function(response){
-           setEmployees(response.data.msg)
-           response.data.msg.map((employee) => {
-         	axios.get(`http://localhost:3000/relation/responsible/${employee.id}`)
+
+         	/**axios.get(`http://localhost:3000/relation/responsible/${employee.id}`)
          	.then(function(response){
          	        employee.subordinates = []
          		employee.subordinates.push(response.data.msg)
          		employees.push(employee)	
+         	})**/
+         	 axios.get(`http://localhost:3000/relation`)
+         	.then(function(response){
+         	         const relations = response
+         	         const employees = []
+         		 axios.get(`http://localhost:3000/employee`)
+        		.then(function(response){
+        		 response.data.msg.forEach(employee => employee.subordinates = [] )
+        		 response.data.msg.forEach(employee => employee.responsible = [] )
+         		      relations.data.msg.map((relation)=>{
+ 			      response.data.msg.filter(employee => employee.id == relation.responsible)[0].subordinates.push(response.data.msg.filter(employee => employee.id == relation.employee)[0])
+ 			      response.data.msg.filter(employee => employee.id == relation.employee)[0].responsible.push(response.data.msg.filter(employee => employee.id == relation.responsible)[0])
+         		})
+         		setEmployees(response.data.msg)
+         		console.log(response.data.msg)
          	})
          })  
          resolve(setEmployees(employees))
-       })   
+     
        })
       }
       

@@ -94,23 +94,23 @@ try{
   }))
     //PUSH RELATIONS
     await Promise.all([{
-	id:'1',
+	id:'francoisDeboutsergkudinov',
 	responsible:'francoisDebout',
 	employee:'sergkudinov'
 	},{
-	id: '2',
+	id: 'sergkudinovclemencej',
 	responsible: 'sergkudinov',
 	employee: 'clemencej'
 	},{
-	id: '3',
+	id: 'francoisDeboutbaptistec',
 	responsible: 'francoisDebout',
 	employee: 'baptistec'
 	},{
-	id: '4',
+	id: 'sergkudinovviviend',
 	responsible: 'sergkudinov',
 	employee: 'viviend'
 	},{
-	id: '5',
+	id: 'davidwlouisf',
 	responsible: 'davidw',
 	employee: 'louisf'
 }].map( async (relation) => {

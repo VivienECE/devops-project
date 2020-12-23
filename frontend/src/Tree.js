@@ -83,7 +83,7 @@ export default forwardRef(({
   onScrollDown,
 }, ref) => {
   const styles = useStyles(useTheme())
-
+  const [currentEmployee, setCurrentEmployee] = useState(null)
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
@@ -137,16 +137,15 @@ const modifyJob = (
     </Select>
     </fieldset>
     
-      <Button color="inhirit" variant='contained' style={{marginRight:'15px'}} onClick={handleCloseModify}>
+      <Button color="inhirit" variant='contained' style={{marginRight:'15px'}} onClick={function(){handleCloseModify()}}>
           Cancel
       </Button>
       <Button color="secondary" variant='contained' type="submit" onClick={async () => {
-        /*axios.put(`http://localhost:3001/departments/${department.id}/employees/${employee.id}`, {
+        /*axios.put(`http://localhost:3000/departments/${department.id}/employees/${employee.id}`, {
         job: job
       })*/
       setJob('')
       setOpenModify(false);
-      window.location.reload()
     }}>
           Validate new position
       </Button>
@@ -155,46 +154,49 @@ const modifyJob = (
 
   //Delete an employee
   const [openDel, setOpenDel] = useState(false); 
-  const handleOpenDel = () => { 
+  const handleOpenDel = (employee) => {
+    setCurrentEmployee(employee)
     setOpenDel(true);
   };
   const handleCloseDel = () => { 
     setOpenDel(false);
   };
+  
   //PASSER EN PARAMETRE L'EMPLOYEE
-  const onSubmitDel = async () => {
-    /*axios.delete(`http://localhost:3001/departments/${department.id}/employees/${employee.id}`, {
-    headers: {
-         'Authorization': `Bearer ${oauth.access_token}`
-    }
-  })*/
+  const onSubmitDel = async (employee) => {
+    axios.delete(`http://localhost:3000/employee/${currentEmployee.id}`)
+    axios.delete(`http://localhost:3000/relation/${currentEmployee.responsible[0].id}${currentEmployee.id}`)
   setOpenDel(false);
-  window.location.reload()
+   window.location.reload()
   }
-  const deleteEmployee = (
+  
+  const deleteEmployee = (employee) => { 
+  return(
     <div align="center" css={styles.modal}>
       <h2>Do you really want to dismiss this employee?</h2>
-        <Button color="inhirit" variant='contained' style={{marginRight:'15px'}} onClick={handleCloseDel}>
+      <form>
+        <Button color="inhirit" variant='contained' style={{marginRight:'15px'}} onClick={function(){handleCloseDel()}}>
             Cancel
         </Button>
-        <Button style={{backgroundColor:'red', color:'white'}} variant='contained' type="submit" onClick={onSubmitDel}>
+        <Button style={{backgroundColor:'red', color:'white'}} variant='contained' type="submit" onClick={function(){onSubmitDel(employee)}}>
             Dismiss
         </Button>
+      </form>
     </div> 
-  );
+  );}
 
   const showEmployee = (employee) => {
     return(
     <div css={styles.card}>
         <img src={Man} width="50" height="50"/>
         <h5>{employee.firstname} {employee.lastname} <br/>{employee.role}</h5>
-        <Button variant="contained" size="small" color="secondary" onClick={handleOpenModify} style={{marginRight:'10px'}}>Upgrade</Button>
+        <Button variant="contained" size="small" color="secondary" onClick={function(){handleOpenModify()}} style={{marginRight:'10px'}}>Upgrade</Button>
         <Modal css={styles.modal} open={openModify} onClose={handleCloseModify}>
           {modifyJob}
         </Modal>
-        <Button variant="contained" size="small" color="primary" onClick={handleOpenDel}>Dismiss</Button>
+        <Button variant="contained" size="small" color="primary" onClick={function(){handleOpenDel(employee)}}>Dismiss</Button>
         <Modal css={styles.modal} open={openDel} onClose={handleCloseDel}>
-          {deleteEmployee}
+          {deleteEmployee(employee)}
         </Modal>
     </div>
     )
@@ -204,9 +206,8 @@ const modifyJob = (
    function recursiveNodeTree(responsible){
     const toreturn = []
     if(responsible)
-    if(responsible.subordinates[0] != undefined )
-      console.log(responsible.subordinates[0])
-      toreturn.push(responsible.subordinates[0].map((subordinate) => { 
+    if(responsible.subordinates)
+      toreturn.push(responsible.subordinates.map((subordinate) => { 
       if(subordinate)
   	return (
   		<TreeNode label={showEmployee(subordinate)}>{recursiveNodeTree(employees.filter(employee => employee.id == subordinate.id)[0])}</TreeNode>
@@ -214,6 +215,40 @@ const modifyJob = (
      }))
    return toreturn
   }
+  
+   function displayManagerNodeTree(employees){
+    const toreturn = []
+    toreturn.push(employees.map((employee) => { 
+        if(employee.role == "Manager"&&employee.department===department.name)
+  	return (
+  		<TreeNode label={showEmployee(employee)}>{displayEmployeeNodeTree(employees)}</TreeNode>
+  	)
+   }))
+   return toreturn
+  }
+  
+  function displayEmployeeNodeTree(employees){
+    const toreturn = []
+    toreturn.push(employees.map((employee) => { 
+        if(employee.role == "Employee"&&employee.department===department.name)
+  	return (
+  		<TreeNode label={showEmployee(employee)}>{displayInternNodeTree(employees)}</TreeNode>
+  	)
+   }))
+   return toreturn
+  }
+  
+   function displayInternNodeTree(employees){
+    const toreturn = []
+    toreturn.push(employees.map((employee) => { 
+        if(employee.role == "Intern" && employee.department===department.name)
+  	return (
+  		<TreeNode label={showEmployee(employee)}></TreeNode>
+  	)
+   }))
+   return toreturn
+  }
+  
   
   return (
     <div css={styles.root} ref={rootEl}>
