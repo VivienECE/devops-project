@@ -25,4 +25,4 @@ spec:
             name: "http-server"
         volumeMounts:
         - name: my-emptydir
-          mountPath: /usr/share/redis/jd
+          mountPath: /usr/share/redis/js

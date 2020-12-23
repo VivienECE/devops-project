@@ -40,16 +40,49 @@
     state: started
     enabled: yes
 
-- name: Download GitLab install script
-  get_url:
-    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh
-    dest: /tmp/script.rpm.sh
+- name: Install Node.js and npm
+yum:
+  name: npm
+  state: present
+  #enabled: yes
 
-- name: Execute GitLab install script
-  script: /tmp/script.rpm.sh
+- name: Install Rorever (to run our Node.js app)
+npm:
+  name: forever
+  global: yes
+  state: present
 
-- name: Install GitLab
-  yum:
-    name: gitlab-ee
-  environment:
-    EXTERNAL_URL: http://gitlab.local
+- name: Prepare redis host
+  hosts: all
+  sudo: true
+  vars:
+    redis_conf_path: /etc/redis.conf
+  tasks:
+    - name: set locale
+      lineinfile: dest=/etc/default/locale line="LC_ALL=C"
+
+    - name: install redis
+      apt: name=redis-server update_cache=yes
+
+    - name: create the redis configuration file
+      template:
+        src: redis.conf.j2
+        dest: "{{ redis_conf_path }}"
+        mode: 0644
+        backup: yes
+      notify:
+        - restart redis
+
+    - name: start redis
+      service:
+        name: redis-server
+        state: started
+        arguments: "{{ redis_conf_path }}"
+        enabled: yes
+
+  handlers:
+    - name: restart redis
+      service:
+        name: redis-server
+        state: restarted
+        enabled: yes
