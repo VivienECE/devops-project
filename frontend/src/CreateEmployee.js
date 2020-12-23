@@ -16,8 +16,8 @@ import avatarNone from './none.png';
 import Radio from '@material-ui/core/Radio';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-/*import axios from 'axios';
-*/
+import axios from 'axios';
+
 
 
 const styles = {
@@ -38,7 +38,7 @@ const styles = {
 }
 
 
-const CreateEmployee = () => { 
+const CreateEmployee = (department) => { 
   const [avatar, setAvatar] = useState(avatarNone)
 
 //Firstname
@@ -67,7 +67,6 @@ const [gender, setGender] = useState('')
 const [job, setJob] = useState('')
 const handleChangeJob = (e) => {
   setJob(e.target.value)
-  console.log(job)
 }
 
 //email
@@ -81,17 +80,17 @@ const [email, setEmail] = useState('')
     setBirth(e.target.value)
   }
 //save all fields
-  const Save = async (department) => {
-   /* await axios.post(`http://localhost:3001/departments/${department.id}/employees`, {
-      avatar: avatar,
+  const Save = async () => {
+    await axios.post(`http://localhost:3000/employee`, {
       firstname: firstname,
       lastname: lastname,
-      username: username,
-      email: oauth.email,
+      gender: gender,
+      job: job,
+      department: department,
+      email: email,
       birth: birth
-    })*/
-    console.log('save')
-    }
+    })
+  }
 
 	return (
     <div css={styles.root}>
@@ -128,6 +127,7 @@ const [email, setEmail] = useState('')
                 <MenuItem value='Manager' onChange={handleChangeJob}>Manager</MenuItem>
                 <MenuItem value='Director' onChange={handleChangeJob}>Director</MenuItem>
                 <MenuItem value='Employee'onChange={handleChangeJob} >Employee</MenuItem>
+                <MenuItem value='Intern'onChange={handleChangeJob} >Intern</MenuItem>
             </Select>
             </fieldset>
             <fieldset>

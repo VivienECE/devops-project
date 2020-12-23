@@ -74,19 +74,6 @@ export default () =>  {
   const onClickScroll = () => {
       listRef.current.scroll()} 
       
-  //Add an employee
-  const [openAdd, setOpenAdd] = useState(false); 
-  const handleOpenAdd = () => { 
-      setOpenAdd(true);
-      console.log('open')};
-  const handleCloseAdd = () => { 
-      setOpenAdd(false);};
-    
-  const newEmployee = (
-      <div align="center" css={styles.modal}>
-          <CreateEmployee />
-      </div> 
-  );
 
   const department = departments.find( department => department.name === name)
   if(!department) {
@@ -98,6 +85,19 @@ export default () =>  {
       departmentName.current = department.name
     }
 
+//Add an employee
+  const [openAdd, setOpenAdd] = useState(false); 
+  const handleOpenAdd = () => { 
+      setOpenAdd(true);
+      console.log('open')};
+  const handleCloseAdd = () => { 
+      setOpenAdd(false);};
+    
+  const newEmployee = (
+      <div align="center" css={styles.modal}>
+          <CreateEmployee department={department}/>
+      </div> 
+  );
   /**fEmployees(department).then(result => {
   }).catch(err => {});**/
     return (

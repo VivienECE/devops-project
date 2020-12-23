@@ -122,8 +122,8 @@ export default forwardRef(({
   const handleChangeJob = (e) => {
     setJob(e.target.value)
   }
-//PRENDRE L'EMPLOYEE EN PARAMETRE
-const modifyJob = (
+
+const modifyJob = (employee) => { return(
   <div align="center" css={styles.modal}>
     <h2>Change NAME position</h2>
     <fieldset>
@@ -134,6 +134,7 @@ const modifyJob = (
       <MenuItem value='Manager' onChange={handleChangeJob}>Manager</MenuItem>
       <MenuItem value='Director' onChange={handleChangeJob}>Director</MenuItem>
       <MenuItem value='Employee'onChange={handleChangeJob} >Employee</MenuItem>
+      <MenuItem value='Intern'onChange={handleChangeJob} >Intern</MenuItem>
     </Select>
     </fieldset>
     
@@ -141,7 +142,7 @@ const modifyJob = (
           Cancel
       </Button>
       <Button color="secondary" variant='contained' type="submit" onClick={async () => {
-        /*axios.put(`http://localhost:3001/departments/${department.id}/employees/${employee.id}`, {
+        await axios.put(`http://localhost:3000/employee/${employee.id}`, {
         job: job
       })*/
       setJob('')
@@ -151,7 +152,7 @@ const modifyJob = (
           Validate new position
       </Button>
   </div> 
-);
+  );}
 
   //Delete an employee
   const [openDel, setOpenDel] = useState(false); 
@@ -161,27 +162,24 @@ const modifyJob = (
   const handleCloseDel = () => { 
     setOpenDel(false);
   };
-  //PASSER EN PARAMETRE L'EMPLOYEE
-  const onSubmitDel = async () => {
-    /*axios.delete(`http://localhost:3001/departments/${department.id}/employees/${employee.id}`, {
-    headers: {
-         'Authorization': `Bearer ${oauth.access_token}`
-    }
-  })*/
-  setOpenDel(false);
-  window.location.reload()
+  const onSubmitDel = async (employee) => {
+    console.log(employee)
+    await axios.delete(`http://localhost:3000/employee/${employee.id}`)
+    setOpenDel(false);
+    //window.location.reload()
   }
-  const deleteEmployee = (
+  const deleteEmployee = (employee) => {
+    return(
     <div align="center" css={styles.modal}>
       <h2>Do you really want to dismiss this employee?</h2>
         <Button color="inhirit" variant='contained' style={{marginRight:'15px'}} onClick={handleCloseDel}>
             Cancel
         </Button>
-        <Button style={{backgroundColor:'red', color:'white'}} variant='contained' type="submit" onClick={onSubmitDel}>
+        <Button style={{backgroundColor:'red', color:'white'}} variant='contained' type="submit" onClick={onSubmitDel(employee)}>
             Dismiss
         </Button>
     </div> 
-  );
+  );}
 
   const showEmployee = (employee) => {
     return(
@@ -190,11 +188,11 @@ const modifyJob = (
         <h5>{employee.firstname} {employee.lastname} <br/>{employee.role}</h5>
         <Button variant="contained" size="small" color="secondary" onClick={handleOpenModify} style={{marginRight:'10px'}}>Upgrade</Button>
         <Modal css={styles.modal} open={openModify} onClose={handleCloseModify}>
-          {modifyJob}
+          {modifyJob(employee)}
         </Modal>
         <Button variant="contained" size="small" color="primary" onClick={handleOpenDel}>Dismiss</Button>
         <Modal css={styles.modal} open={openDel} onClose={handleCloseDel}>
-          {deleteEmployee}
+          {deleteEmployee(employee)}
         </Modal>
     </div>
     )
