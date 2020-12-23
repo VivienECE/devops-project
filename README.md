@@ -1,59 +1,29 @@
-# User API web application
+# DevOps App
 
-It is a basic NodeJS web application exposing REST API that creates and stores user parameters in [Redis database](https://redis.io/).
-
-## Functionality
-
-1. Start a web server
-2. Create a user
-
-## Installation
-
-This application is written on NodeJS and it uses Redis database.
-
-1. [Install NodeJS](https://nodejs.org/en/download/)
-
-2. [Install Redis](https://redis.io/download)
-
-3. Install application
-
-Go to the root directory of the application (where `package.json` file located) and run:
-
-```
-npm install 
-```
+This is an application Vivien and Clemence created. It is a basic NodeJS web application exposing REST API that creates and stores user parameters in [Redis database](https://redis.io/). To make the application more interesting, we decided to build it as a compagny's chart: see the employees of each department and decide to dismiss or upgrade them. Also, it is possible to add an employee to any department.
 
 ## Usage
 
-1. Start a web server
+### Initialization
 
-From the root directory of the project run:
-
+In init file, we initialized three departments with employees. To init :
+```bash
+$ cd backend 
+$ node src/init
 ```
-npm start
-```
 
-It will start a web server available in your browser at http://localhost:3000.
+### Starting
 
-2. Create a user
-
-Send a POST (REST protocol) request using terminal:
+Start the web application:
 
 ```bash
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"username":"sergkudinov","firstname":"sergei","lastname":"kudinov"}' \
-  http://localhost:3000/user
+$ cd backend 
+$ npm start
 ```
-
-It will output:
-
+```bash
+$ cd frontend 
+$ npm start
 ```
-{"status":"success","msg":"OK"}
-```
-
-Another way to test your REST API is to use [Postman](https://www.postman.com/).
-
 ## Testing
 
 From the root directory of the project, run:
@@ -62,7 +32,62 @@ From the root directory of the project, run:
 npm test
 ```
 
-## Author
+## Fonctionalities
 
-Sergei Kudinov   
-sergei@adaltas.com
+### Web application
+
+We implemented a web application that allows a Human Resources Manager, for example, to see his/her compagny's chart: get the employees of each department and decide to dismiss or upgrade them. Also, it is possible to add an employee to any department. 
+
+* Our application ensures CRUD user funtionality.
+* We used Redis to store information. 
+* We coded some tests for the connection, creation and listing of employees...
+
+### CI/CD pipeline
+
+We configured and applied CI/CD pipeline using the platforms Travis CI and Heroku. Links : 
+* Travis CI: VIVIEN
+* Heroku: VIVIEN
+
+### IaC approach
+
+We used Vagrant to configure and provision a virtual environment. And provision our VM with Ansible Provisioner to install and run:
+* Nodejs
+* Redis
+* Our application (with sync folders)
+* Health check of our application
+
+### Docker image
+
+We created a Docker image of our application and pushed it to Docker Hub. Link : VIVIEN
+
+### Docker Compose
+
+We created a ``` docker-compose.yml``` file that starts our application.
+
+### Kurbernetes
+
+Using Minikube, we installed Kubernetes and created yaml files:
+* deployments
+* services
+* persistent volume and persistent volume claim
+
+### Istio
+
+We made a service mesh using Istio by creating configuration of:
+* route requests between 2 different versions of our app
+* traffic shifting between 2 different versions of our app
+
+### Bonus
+
+* We made more different API methods (see /backend).
+* We made more different unit/functional/integration tests (see /backend).
+
+## Preview
+
+IMAGE VIVIEN
+
+## Authors
+
+Vivien DETOURNAY and Clémence JEAN-LOUIS DIT MONTOUT
+SI inter Gr01
+
