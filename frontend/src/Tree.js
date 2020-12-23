@@ -296,7 +296,7 @@ const modifyJob = (employee) => { if(currentEmployee){return(
   return (
     <div css={styles.root} ref={rootEl}>
       {employees.map((emp) => {
-        if(emp.role==='Director'&&emp.department===department.name){
+        if((emp.role==='Director'&&emp.department===department.name)){
           return(
           <Tree
             lineWidth={'3px'}
@@ -306,9 +306,25 @@ const modifyJob = (employee) => { if(currentEmployee){return(
             label={showEmployee(emp)}
           >{recursiveNodeTree(emp)}
           </Tree>
-          )}})}          
+          )}})}        
+          
+          {employees.map((emp) => {
+          console.log(emp.responsible)
+        if((emp.responsible[0]==undefined&&emp.department===department.name&&emp.role!='Director')){
+          return(
+          <Tree
+            lineWidth={'3px'}
+            lineColor={'rgb(204,204,204)'}
+            lineBorderRadius={'10px'}
+            css={styles.styledNode}
+            label={showEmployee(emp)}
+          >{recursiveNodeTree(emp)}
+          </Tree>
+          )}})}     
+            
       <div ref={scrollEl} />
     </div>
   )
-})
+}
+)
 
