@@ -36,7 +36,7 @@ npm --prefix backend install
 
 We implemented a web application that allows a Human Resources Manager, for example, to see his/her compagny's chart: get the employees of each department and decide to dismiss or upgrade them. Also, it is possible to add an employee to any department. 
 
-* Our application ensures CRUD user funtionality. Note that if you dismiss an employee, all his/her subordinates will be dismissed too.
+* Our application ensures CRUD user funtionality. 
 * We used Redis to store information. 
 * We coded some tests for the connection, creation and listing of employees...
 
