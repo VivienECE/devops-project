@@ -88,6 +88,7 @@ Using Minikube, we installed Kubernetes and created yaml files:
 * We made more different API methods (see /backend/src/route).
 * We made more different unit/functional/integration tests (see /backend/test).
 * API Documentation : https://documenter.getpostman.com/view/13372911/TVsvi7e2
+* Tags : https://github.com/VivienECE/devops-project/tags
 
 ## Preview Frontend
 
