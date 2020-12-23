@@ -1,4 +1,4 @@
-import {useContext, useRef, useState} from 'react';
+import {useContext, useRef, useState, useEffect} from 'react';
 import axios from 'axios';
 /** @jsxRuntime classic */
 /** @jsx jsx */
@@ -58,76 +58,48 @@ const useStyles = (theme) => ({
   },
 })
 
-export default () => {
+export default () =>  {
   
   const history = useHistory()
   const { name } = useParams()
   const styles = useStyles(useTheme())
-  const {departments, setDepartments} = useContext(Context)
-  const [employees, setEmployees] = useState([])
+  const {employees, departments, setDepartments} = useContext(Context)
   const listRef = useRef()
   const departmentName = useRef()
-  //const [messages, setMessages] = useState([])
   const [scrollDown, setScrollDown] = useState(false)
-  /*
-  const fetchDepartments = async () => {
-    try{
-      const {data: departments} = await axios.get('http://localhost:3000/department')
-    }catch(err){
-      console.error(err)
-    }
-  }
-  if(!departments)
-    fetchDepartments()*/
-  if(name){
-    const department = departments.find( department => department.name === name)
-    if(!department) {
+ 
+  const onScrollDown = (scrollDown) => {
+      setScrollDown(scrollDown)}
+      
+  const onClickScroll = () => {
+      listRef.current.scroll()} 
+      
+  //Add an employee
+  const [openAdd, setOpenAdd] = useState(false); 
+  const handleOpenAdd = () => { 
+      setOpenAdd(true);
+      console.log('open')};
+  const handleCloseAdd = () => { 
+      setOpenAdd(false);};
+    
+  const newEmployee = (
+      <div align="center" css={styles.modal}>
+          <CreateEmployee />
+      </div> 
+  );
+
+  const department = departments.find( department => department.name === name)
+  if(!department) {
       history.push('/')
       return <div/>
     }
-    
-
-    const fetchEmployees = async (department) => {
-      const {data: employees} = await axios.get(`http://localhost:3000/department/${department.name}/employees`)
-      setEmployees(employees.msg)
-    }
-    
-    if(employees.length===0){
-      fetchEmployees(department)
-    }
-      
-    
-    
+  else{
     if(departmentName.current !== department.name){
-      fetchEmployees(department)
       departmentName.current = department.name
     }
 
-    const onScrollDown = (scrollDown) => {
-      setScrollDown(scrollDown)
-    }
-    const onClickScroll = () => {
-      listRef.current.scroll()
-    }
-    
-    //Add an employee
-    const [openAdd, setOpenAdd] = useState(false); 
-    const handleOpenAdd = () => { 
-      setOpenAdd(true);
-      console.log('open')
-    };
-    const handleCloseAdd = () => { 
-      setOpenAdd(false);
-    };
-    
-    const newEmployee = (
-          <div align="center" css={styles.modal}>
-              <CreateEmployee />
-          </div> 
-    );
-
-    console.log(department.name)
-    console.log(employees)
+  /**fEmployees(department).then(result => {
+  }).catch(err => {});**/
     return (
       <div css={styles.root}>
         <div css={styles.top}>
@@ -148,5 +120,4 @@ export default () => {
       </div>
     );
   }
-  
 }

@@ -71,14 +71,35 @@ departments: {
 })
 
 export default () => {
-  const {departments, setDepartments} = useContext(Context)
+  const {employees, setEmployees, departments, setDepartments} = useContext(Context)
   const history = useHistory();
   const styles = useStyles(useTheme())
+  
+   function getEmployees(){
+       return new Promise(function(resolve){
+             const employees = []
+          axios.get(`http://localhost:3000/employee`)
+         .then(function(response){
+           setEmployees(response.data.msg)
+           response.data.msg.map((employee) => {
+         	axios.get(`http://localhost:3000/relation/responsible/${employee.id}`)
+         	.then(function(response){
+         	        employee.subordinates = []
+         		employee.subordinates.push(response.data.msg)
+         		employees.push(employee)	
+         	})
+         })  
+         resolve(setEmployees(employees))
+       })   
+       })
+      }
+      
   useEffect( () => {
     const fetch = async () => {
       try{
         const {data: departments} = await axios.get('http://localhost:3000/department')
         setDepartments(departments.msg)
+        await getEmployees()
       }catch(err){
         console.error(err)
       }

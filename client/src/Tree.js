@@ -199,58 +199,26 @@ const modifyJob = (
     </div>
     )
   }
-  const findManagers = async (director) =>{
-    const {data: managers} = await axios.get(`http://localhost:3000/relation/responsible/${director.id}`)
-    return (
-      <div>
-        {managers.msg.map((man) => {
-          return(
-            <TreeNode label={showEmployee(man)}></TreeNode>
-          )
-      })}
-      </div>
-    )
+  
+  //Recursive nodeTree creation, until no more subordinates
+   function recursiveNodeTree(responsible){
+    const toreturn = []
+    if(responsible)
+    if(responsible.subordinates != undefined)
+      toreturn.push(responsible.subordinates[0].map((subordinate) => { 
+      console.log(employees.filter(employee => employee.id == subordinate.id)[0])
+  	return (
+  		<TreeNode label={showEmployee(subordinate)}>{recursiveNodeTree(employees.filter(employee => employee.id == subordinate.id)[0])}</TreeNode>
+  	)
+     }))
+   return toreturn
   }
+  
 
-  function displayManagerNodeTree(employees){
-    const toreturn = []
-    toreturn.push(employees.map((employee) => { 
-        if(employee.role == "Manager")
-  	return (
-  		<TreeNode label={showEmployee(employee)}>{displayEmployeeNodeTree(employees)}</TreeNode>
-  	)
-   }))
-   return toreturn
-  }
-  
-  function displayEmployeeNodeTree(employees){
-    const toreturn = []
-    toreturn.push(employees.map((employee) => { 
-        if(employee.role == "Employee")
-  	return (
-  		<TreeNode label={showEmployee(employee)}>{displayInternNodeTree(employees)}</TreeNode>
-  	)
-   }))
-   return toreturn
-  }
-  
-   function displayInternNodeTree(employees){
-    const toreturn = []
-    toreturn.push(employees.map((employee) => { 
-        if(employee.role == "Intern")
-  	return (
-  		<TreeNode label={showEmployee(employee)}></TreeNode>
-  	)
-   }))
-   return toreturn
-  }
-  
-  console.log(employees)
-  let managers = []
   return (
     <div css={styles.root} ref={rootEl}>
       {employees.map((emp) => {
-        if(emp.role==='Director'){
+        if(emp.role==='Director'&&emp.department===department.name){
           return(
           <Tree
             lineWidth={'3px'}
@@ -258,7 +226,7 @@ const modifyJob = (
             lineBorderRadius={'10px'}
             css={styles.styledNode}
             label={showEmployee(emp)}
-          >{displayManagerNodeTree(employees)}
+          >{recursiveNodeTree(emp)}
           </Tree>
           )}})}          
       <div ref={scrollEl} />
