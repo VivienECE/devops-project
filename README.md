@@ -6,7 +6,13 @@ This is an application Vivien and Clemence created. It is a basic NodeJS web app
 
 ### Initialization
 
-In init file, we initialized three departments with employees. 
+It's possible to run and initialize the backend on port 3000, and redis on 6379 with containers orchestration:
+```
+cd backend
+docker-compose up
+```
+
+Otherwise, in init file, we initialized three departments with employees. 
 Redis-server on required.
 To init :
 ```bash
@@ -21,15 +27,17 @@ Start the web application:
 ```bash
 $ npm --prefix backend start  
 ```
+
 ```bash
-$ npm --prefix start install 
+$ npm --prefix frontend install 
+$ npm --prefix frontend start
 ```
 ## Testing
 
 From the root directory of the project, run:
 
 ```
-npm --prefix backend install 
+npm --prefix backend test 
 ```
 
 ## Fonctionalities
@@ -61,7 +69,7 @@ We created a Docker image of our application and pushed it to Docker Hub. Link :
 
 ### Docker Compose
 
-We created a ``` docker-compose.yml``` file that starts our application.
+We created a ``` docker-compose.yml``` file that starts our backend.
 ```
 cd backend
 docker-compose up
