@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 import {useContext} from 'react';
 import Typography from '@material-ui/core/Typography';
 import {useState} from 'react';

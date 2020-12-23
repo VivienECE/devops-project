@@ -1,7 +1,7 @@
 import {useState} from 'react';
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 // Layout
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

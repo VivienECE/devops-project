@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 import axios from 'axios';
 import React, { useContext, useEffect, useState} from 'react';
 import Context from './Context'

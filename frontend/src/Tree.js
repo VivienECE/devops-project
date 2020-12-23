@@ -2,7 +2,7 @@ import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from
 //import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 // Layout
 import { useTheme } from '@material-ui/core/styles';
 // Markdown
