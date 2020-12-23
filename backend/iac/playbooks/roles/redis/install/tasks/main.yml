@@ -41,16 +41,16 @@
     enabled: yes
 
 - name: Install Node.js and npm
-yum:
-  name: npm
-  state: present
-  #enabled: yes
+  yum:
+    name: npm
+    state: present
+    #enabled: yes
 
 - name: Install Rorever (to run our Node.js app)
-npm:
-  name: forever
-  global: yes
-  state: present
+  npm:
+    name: forever
+    global: yes
+    state: present
 
 - name: Prepare redis host
   hosts: all
