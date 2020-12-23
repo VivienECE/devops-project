@@ -45,7 +45,7 @@ We implemented a web application that allows a Human Resources Manager, for exam
 ### CI/CD pipeline
 
 We configured and applied CI/CD pipeline using the platforms Travis CI and Heroku. Links : 
-* Travis CI: VIVIEN
+* Travis CI: https://travis-ci.com/github/VivienECE/devops-project
 * Heroku: VIVIEN
 
 ### IaC approach
@@ -58,7 +58,7 @@ We used Vagrant to configure and provision a virtual environment. And provision 
 
 ### Docker image
 
-We created a Docker image of our application and pushed it to Docker Hub. Link : VIVIEN
+We created a Docker image of our application and pushed it to Docker Hub. Link : https://hub.docker.com/repository/docker/vivienece/backend
 
 ### Docker Compose
 
