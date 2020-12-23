@@ -214,7 +214,6 @@ const modifyJob = (
    return toreturn
   }
   
-
   return (
     <div css={styles.root} ref={rootEl}>
       {employees.map((emp) => {
