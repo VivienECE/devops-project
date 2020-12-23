@@ -202,9 +202,10 @@ const modifyJob = (employee) => { return(
    function recursiveNodeTree(responsible){
     const toreturn = []
     if(responsible)
-    if(responsible.subordinates != undefined)
+    if(responsible.subordinates[0] != undefined )
+      console.log(responsible.subordinates[0])
       toreturn.push(responsible.subordinates[0].map((subordinate) => { 
-      console.log(employees.filter(employee => employee.id == subordinate.id)[0])
+      if(subordinate)
   	return (
   		<TreeNode label={showEmployee(subordinate)}>{recursiveNodeTree(employees.filter(employee => employee.id == subordinate.id)[0])}</TreeNode>
   	)
