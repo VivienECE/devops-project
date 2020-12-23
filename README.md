@@ -8,8 +8,8 @@ This is an application Vivien and Clemence created. It is a basic NodeJS web app
 
 In init file, we initialized three departments with employees. To init :
 ```bash
-$ cd backend 
-$ node src/init
+$ npm --prefix backend install 
+$ node backend/src/init
 ```
 
 ### Starting
@@ -17,19 +17,17 @@ $ node src/init
 Start the web application:
 
 ```bash
-$ cd backend 
-$ npm start
+$ npm --prefix backend start  
 ```
 ```bash
-$ cd frontend 
-$ npm start
+$ npm --prefix start install 
 ```
 ## Testing
 
 From the root directory of the project, run:
 
 ```
-npm test
+npm --prefix backend install 
 ```
 
 ## Fonctionalities
@@ -63,6 +61,10 @@ We created a Docker image of our application and pushed it to Docker Hub. Link :
 ### Docker Compose
 
 We created a ``` docker-compose.yml``` file that starts our application.
+```
+cd backend
+docker-compose up
+```
 
 ### Kurbernetes
 
@@ -79,12 +81,14 @@ We made a service mesh using Istio by creating configuration of:
 
 ### Bonus
 
-* We made more different API methods (see /backend).
-* We made more different unit/functional/integration tests (see /backend).
+* We made more different API methods (see /backend/src/route).
+* We made more different unit/functional/integration tests (see /backend/test).
+* API Documentation : https://documenter.getpostman.com/view/13372911/TVsvi7e2
 
-## Preview
+## Preview Frontend
 
-IMAGE VIVIEN
+![](img/img1.png)
+![](img/img2.png)
 
 ## Authors
 
