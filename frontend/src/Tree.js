@@ -48,7 +48,18 @@ const useStyles = (theme) => ({
     position: 'relative',
     float:'none',
     display: 'inline-block',
-    backgroundColor:'rgba(200,200,200,.5)'
+    backgroundColor:'rgba(200,200,200,.5)',
+    '& h5':{
+      padding: 0,
+      margin: 5,
+    },
+    '& h6':{
+      padding: 0,
+      margin: 5,
+    },
+    '& Button':{
+      marginTop: 20,
+    },
   },
   modal:{
     border: 'none',
@@ -125,7 +136,7 @@ export default forwardRef(({
 
 const modifyJob = (employee) => { return(
   <div align="center" css={styles.modal}>
-    <h2>Change NAME position</h2>
+    <h2>Change {employee.name} position</h2>
     <fieldset>
       <Select
       value={job}
@@ -188,20 +199,41 @@ const modifyJob = (employee) => { return(
   );}
 
   const showEmployee = (employee) => {
-    return(
-    <div css={styles.card}>
-        <img src={Man} width="50" height="50"/>
-        <h5>{employee.firstname} {employee.lastname} <br/>{employee.role}</h5>
-        <Button variant="contained" size="small" color="secondary" onClick={function(){handleOpenModify()}} style={{marginRight:'10px'}}>Upgrade</Button>
-        <Modal css={styles.modal} open={openModify} onClose={handleCloseModify}>
-          {modifyJob(employee)}
-        </Modal>
-        <Button variant="contained" size="small" color="primary" onClick={function(){handleOpenDel(employee)}}>Dismiss</Button>
-        <Modal css={styles.modal} open={openDel} onClose={handleCloseDel}>
-          {deleteEmployee(employee)}
-        </Modal>
-    </div>
-    )
+    if(employee.gender==='Man'){
+      return(
+        <div css={styles.card}>
+            <img src={Man} width="50" height="50"/>
+            <h5>{employee.firstname} {employee.lastname} </h5><h5 style={{color:'#5a94af'}}>{employee.role}</h5>
+            <h6>{employee.email}</h6>
+            <Button variant="contained" size="small" color="secondary" onClick={function(){handleOpenModify()}} style={{marginRight:'10px'}}>Upgrade</Button>
+            <Modal css={styles.modal} open={openModify} onClose={handleCloseModify}>
+              {modifyJob(employee)}
+            </Modal>
+            <Button variant="contained" size="small" color="primary" onClick={function(){handleOpenDel(employee)}}>Dismiss</Button>
+            <Modal css={styles.modal} open={openDel} onClose={handleCloseDel}>
+              {deleteEmployee(employee)}
+            </Modal>
+        </div>
+        )
+    }
+    else{
+      return(
+        <div css={styles.card}>
+            <img src={Woman} width="50" height="50"/>
+            <h5>{employee.firstname} {employee.lastname} </h5><h5 style={{color:'#5a94af'}}>{employee.role}</h5>
+            <h6>{employee.email}</h6>
+            <Button variant="contained" size="small" color="secondary" onClick={function(){handleOpenModify()}} style={{marginRight:'10px'}}>Upgrade</Button>
+            <Modal css={styles.modal} open={openModify} onClose={handleCloseModify}>
+              {modifyJob(employee)}
+            </Modal>
+            <Button variant="contained" size="small" color="primary" onClick={function(){handleOpenDel(employee)}}>Dismiss</Button>
+            <Modal css={styles.modal} open={openDel} onClose={handleCloseDel}>
+              {deleteEmployee(employee)}
+            </Modal>
+        </div>
+        )
+    }
+    
   }
   
   //Recursive nodeTree creation, until no more subordinates

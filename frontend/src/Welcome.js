@@ -41,7 +41,7 @@ export default () => {
 
   return (
     <div css={styles.root}>
-      <h1>Welcome</h1>
+      <h1 textAlign='center'>Welcome</h1>
     </div>
   );
 }

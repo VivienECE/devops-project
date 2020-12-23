@@ -23,7 +23,7 @@ try{
 	email: "francois.debout@adaltas.com",
 	birth: "11/03/1980",
 	role: "Director",
-	gender: "Male",
+	gender: "Man",
 	department: "Devops"
 },{
 	id: 'sergkudinov',
@@ -32,7 +32,7 @@ try{
 	email: "sergei.kudinov@adaltas.com",
 	birth: "11/03/1990",
 	role: "Manager",
-	gender: "Male",
+	gender: "Man",
 	department: "Devops"
 },{
 	id: 'clemencej',
@@ -50,7 +50,7 @@ try{
 	email: "louis.fieux@adaltas.com",
 	birth: "11/03/1990",
 	role: "Employee",
-	gender: "Male",
+	gender: "Man",
 	department: "Frontend"
 },{
 	id: 'baptistec',
@@ -59,7 +59,7 @@ try{
 	email: "batpiste.catillon@adaltas.com",
 	birth: "11/03/1990",
 	role: "Manager",
-	gender: "Male",
+	gender: "Man",
 	department: "Devops"
 },{
 	id: 'viviend',
@@ -68,7 +68,7 @@ try{
 	email: "vivien.detournay@adaltas.com",
 	birth: "12/02/1990",
 	role: "Intern",
-	gender: "Male",
+	gender: "Man",
 	department: "Devops"
 },{
 	id: 'davidw',
@@ -77,7 +77,7 @@ try{
 	email: "david.worms@adaltas.com",
     birth: "10/05/1983",
     role: "Director",
-    gender: "Male",
+    gender: "Man",
     department: "Frontend"
 }].map( async (employee) => {
 	 await axios.post(`http://localhost:${config.port}/employee`, (employee))
