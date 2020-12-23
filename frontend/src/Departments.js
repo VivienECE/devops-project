@@ -93,7 +93,10 @@ export default () => {
         		 response.data.msg.forEach(employee => employee.subordinates = [] )
         		 response.data.msg.forEach(employee => employee.responsible = [] )
          		      relations.data.msg.map((relation)=>{
+         		      if(response.data.msg.filter(employee => employee.id == relation.responsible)[0]!=undefined)
  			      response.data.msg.filter(employee => employee.id == relation.responsible)[0].subordinates.push(response.data.msg.filter(employee => employee.id == relation.employee)[0])
+ 			      
+ 			      if(response.data.msg.filter(employee => employee.id == relation.employee)[0]!=undefined)
  			      response.data.msg.filter(employee => employee.id == relation.employee)[0].responsible.push(response.data.msg.filter(employee => employee.id == relation.responsible)[0])
          		})
          		setEmployees(response.data.msg)
