@@ -24,7 +24,7 @@ try{
 	birth: "11/03/1980",
 	role: "Director",
 	gender: "Male",
-	department: "devops"
+	department: "Devops"
 },{
 	id: 'sergkudinov',
 	firstname: 'Sergei',
@@ -33,7 +33,34 @@ try{
 	birth: "11/03/1990",
 	role: "Manager",
 	gender: "Male",
-	department: "devops"
+	department: "Devops"
+},{
+	id: 'clemencej',
+	firstname: 'Clemence',
+	lastname: 'Jean-Louis',
+	email: "clemence.jldm@adaltas.com",
+	birth: "11/03/1990",
+	role: "Intern",
+	gender: "Woman",
+	department: "Devops"
+},{
+	id: 'louisf',
+	firstname: 'Louis',
+	lastname: 'Fieux',
+	email: "louis.fieux@adaltas.com",
+	birth: "11/03/1990",
+	role: "Employee",
+	gender: "Male",
+	department: "Frontend"
+},{
+	id: 'baptistec',
+	firstname: 'Baptiste',
+	lastname: 'Catillon',
+	email: "batpiste.catillon@adaltas.com",
+	birth: "11/03/1990",
+	role: "Manager",
+	gender: "Male",
+	department: "Devops"
 },{
 	id: 'viviend',
 	firstname: 'Vivien',
@@ -42,7 +69,7 @@ try{
 	birth: "12/02/1990",
 	role: "Intern",
 	gender: "Male",
-	department: "devops"
+	department: "Devops"
 },{
 	id: 'davidw',
 	firstname: 'David',
@@ -51,33 +78,41 @@ try{
     birth: "10/05/1983",
     role: "Director",
     gender: "Male",
-    department: "frontend"
+    department: "Frontend"
 }].map( async (employee) => {
 	 await axios.post(`http://localhost:${config.port}/employee`, (employee))
   }))
   //PUSH DEPARTMENT
   await Promise.all([{
-	name: 'comitte',
+	name: 'Comitte',
 },{
-	name: 'devops',
+	name: 'Devops',
 },{
-	name: 'frontend',
+	name: 'Frontend',
 }].map( async (department) => {
 	 await axios.post(`http://localhost:${config.port}/department`, (department))
   }))
     //PUSH RELATIONS
     await Promise.all([{
-	id:'directordevops',
+	id:'1',
 	responsible:'francoisDebout',
 	employee:'sergkudinov'
 	},{
-	id: 'sergkudinovviviend',
+	id: '2',
+	responsible: 'sergkudinov',
+	employee: 'clemencej'
+	},{
+	id: '3',
+	responsible: 'francoisDebout',
+	employee: 'baptistec'
+	},{
+	id: '4',
 	responsible: 'sergkudinov',
 	employee: 'viviend'
 	},{
-	id: 'davidwsergkudinov',
+	id: '5',
 	responsible: 'davidw',
-	employee: 'sergkudinov'
+	employee: 'louisf'
 }].map( async (relation) => {
 	 await axios.post(`http://localhost:${config.port}/relation`, (relation))
   }))
