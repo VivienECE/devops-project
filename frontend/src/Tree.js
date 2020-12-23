@@ -2,7 +2,7 @@ import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from
 //import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 // Layout
 import { useTheme } from '@material-ui/core/styles';
 // Markdown
@@ -199,25 +199,25 @@ const modifyJob = (
     </div>
     )
   }
-  const findManagers = async (director) =>{
-    const {data: managers} = await axios.get(`http://localhost:3000/relation/responsible/${director.id}`)
-    return (
-      <div>
-        {managers.msg.map((man) => {
-          return(
-            <TreeNode label={showEmployee(man)}></TreeNode>
-          )
-      })}
-      </div>
-    )
+  
+  //Recursive nodeTree creation, until no more subordinates
+   function recursiveNodeTree(responsible){
+    const toreturn = []
+    if(responsible)
+    if(responsible.subordinates != undefined)
+      toreturn.push(responsible.subordinates[0].map((subordinate) => { 
+      console.log(employees.filter(employee => employee.id == subordinate.id)[0])
+  	return (
+  		<TreeNode label={showEmployee(subordinate)}>{recursiveNodeTree(employees.filter(employee => employee.id == subordinate.id)[0])}</TreeNode>
+  	)
+     }))
+   return toreturn
   }
-
-  console.log(employees)
-  let managers = []
+  
   return (
     <div css={styles.root} ref={rootEl}>
       {employees.map((emp) => {
-        if(emp.role==='Director'){
+        if(emp.role==='Director'&&emp.department===department.name){
           return(
           <Tree
             lineWidth={'3px'}
@@ -225,7 +225,7 @@ const modifyJob = (
             lineBorderRadius={'10px'}
             css={styles.styledNode}
             label={showEmployee(emp)}
-          >
+          >{recursiveNodeTree(emp)}
           </Tree>
           )}})}          
       <div ref={scrollEl} />

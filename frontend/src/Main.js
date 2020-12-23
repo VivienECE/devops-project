@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 /*import Departments from './Departments'
 import Department from './Department'
 import Welcome from './Welcome'*/

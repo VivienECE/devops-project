@@ -15,7 +15,7 @@ export const Provider = ({
   const [drawerVisible, setDrawerVisible] = useState(false)
   const [departments, setDepartments] = useState([])
   const [currentDepartment, setCurrentDepartment] = useState(null)
-  const [employee, setEmployees] = useState([])
+  const [employees, setEmployees] = useState([])
 
   const fetchDepartment = async () => {
     try{
@@ -29,6 +29,8 @@ export const Provider = ({
   return (
     <Context.Provider value={{
       departments: departments,
+      employees:employees,
+      setEmployees:setEmployees,
       drawerVisible: drawerVisible,
       setDrawerVisible: setDrawerVisible,
       setDepartments: setDepartments,

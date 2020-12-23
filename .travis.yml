@@ -6,14 +6,14 @@ services:
 - redis-server
 script:
 - echo 'Starting'
-- npm install
+- npm --prefix backend install
 - echo 'Testing'
-- npm test
+- npm --prefix backend test
 deploy:
  provider: heroku
  api_key:
   secure: ee2ea119-2860-4a27-9471-8b329691db6c
  app: devops-app
  on:
-  repo: vivienece/devops-project
+  repo: vivienece/devops-project/backend
 

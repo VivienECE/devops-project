@@ -1,0 +1,38 @@
+{
+  "name": "companyRoles-api",
+  "version": "1.0.0",
+  "description": "API for company roles of employees application",
+  "main": "src/index.js",
+  "url": "https://github.com/VivienECE/devops-project",
+  "scripts": {
+    "init-start": "node src/init && src/index.js",
+    "start": "node src/index.js",
+    "test": "./node_modules/.bin/mocha test/*.js"
+  },
+  "author": "Vivien DETOURNAY",
+  "contributors": [
+    {
+      "name": "Clemence Jean-Louis Dit Montout"
+    },
+    {
+      "name": "Sergei Kudinov"
+    }
+  ],
+  "license": "",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mixme": "^0.3.5",
+    "qs": "^6.9.4",
+    "react-scripts": "3.4.3",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^7.16.0",
+    "eslint-plugin-mocha": "^8.0.0",
+    "mocha": "^7.0.1"
+  }
+}
