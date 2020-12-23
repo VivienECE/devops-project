@@ -7,3 +7,5 @@
   - role: redis/install
     tags: install
 
+  - role: redis/healthchecks
+    tags: check

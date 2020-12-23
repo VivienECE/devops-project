@@ -52,37 +52,27 @@
     global: yes
     state: present
 
-- name: Prepare redis host
+- name: Install Redis
   hosts: all
-  sudo: true
   vars:
-    redis_conf_path: /etc/redis.conf
+    redis_port: 3000
+    redis_databases: 1
   tasks:
-    - name: set locale
-      lineinfile: dest=/etc/default/locale line="LC_ALL=C"
+    - name: Ensure Redis is present
+      apt: pkg=redis-server state=latest
+      sudo: true
 
-    - name: install redis
-      apt: name=redis-server update_cache=yes
+    - name: Ensure Redis is started
+      service: name=redis-server state=started enabled=yes
+      sudo: true
 
-    - name: create the redis configuration file
-      template:
-        src: redis.conf.j2
-        dest: "{{ redis_conf_path }}"
-        mode: 0644
-        backup: yes
-      notify:
-        - restart redis
-
-    - name: start redis
-      service:
-        name: redis-server
-        state: started
-        arguments: "{{ redis_conf_path }}"
-        enabled: yes
-
+    - name: Ensure Redis Configuration
+      template: src=redis.conf.j2 dest=/etc/redis/redis.conf owner=root group=root mode=0644
+      sudo: true
+      notify: Redis Restart
+  
   handlers:
-    - name: restart redis
-      service:
-        name: redis-server
-        state: restarted
-        enabled: yes
+
+    - name: Redis Restart
+      service: name=redis-server state=restarted enabled=yes
+      sudo: true

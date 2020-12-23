@@ -146,7 +146,7 @@ const addDepartment = (
       })
       setName('')
       setOpenModal(false);
-      window.reload()
+      window.location.reload()
     }}>
           Validate
       </Button>
