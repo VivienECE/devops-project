@@ -6,9 +6,9 @@ services:
 - redis-server
 script:
 - echo 'Starting'
-- npm -prefix backend install
+- npm --prefix backend install
 - echo 'Testing'
-- npm -prefix backend test
+- npm --prefix backend test
 deploy:
  provider: heroku
  api_key:
