@@ -66,7 +66,7 @@ const useStyles = (theme) => ({
     backgroundColor:'#f1f0ea',
     display: 'flex',
     position: 'relative',
-    top: '5%',
+    top: '30%',
     padding:'1em',
     display: 'table',
     textAlign : 'center',
@@ -123,7 +123,8 @@ export default forwardRef(({
   })
   //Modify an employee
   const [openModify, setOpenModify] = useState(false); 
-  const handleOpenModify = () => { 
+  const handleOpenModify = (employee) => { 
+    setCurrentEmployee(employee)
     setOpenModify(true);
   };
   const handleCloseModify = () => { 
@@ -134,9 +135,9 @@ export default forwardRef(({
     setJob(e.target.value)
   }
 
-const modifyJob = (employee) => { return(
+const modifyJob = (employee) => { if(currentEmployee){return(
   <div align="center" css={styles.modal}>
-    <h2>Change {employee.name} position</h2>
+    <h2>Change {currentEmployee.name} position</h2>
     <fieldset>
       <Select
       value={job}
@@ -153,16 +154,24 @@ const modifyJob = (employee) => { return(
           Cancel
       </Button>
       <Button color="secondary" variant='contained' type="submit" onClick={async () => {
-        await axios.put(`http://localhost:3000/employee/${employee.id}`, {
-        job: job
+        await axios.put(`http://localhost:3000/employee/${currentEmployee.id}`, {
+          id: currentEmployee.id,
+          firstname: currentEmployee.firstname,
+          lastname: currentEmployee.lastname,
+          email: currentEmployee.email,
+          birth: currentEmployee.birth,
+          role: job,
+          gender: currentEmployee.gender,
+          department: currentEmployee.department,
       })
       setJob('')
       setOpenModify(false);
+      window.location.reload()
     }}>
           Validate new position
       </Button>
   </div> 
-  );}
+  );}}
 
   //Delete an employee
   const [openDel, setOpenDel] = useState(false); 
@@ -205,12 +214,12 @@ const modifyJob = (employee) => { return(
             <img src={Man} width="50" height="50"/>
             <h5>{employee.firstname} {employee.lastname} </h5><h5 style={{color:'#5a94af'}}>{employee.role}</h5>
             <h6>{employee.email}</h6>
-            <Button variant="contained" size="small" color="secondary" onClick={function(){handleOpenModify()}} style={{marginRight:'10px'}}>Upgrade</Button>
-            <Modal css={styles.modal} open={openModify} onClose={handleCloseModify}>
+            <Button variant="contained" size="small" color="secondary" onClick={function(){handleOpenModify(employee)}} style={{marginRight:'10px'}}>Upgrade</Button>
+            <Modal open={openModify} onClose={handleCloseModify}>
               {modifyJob(employee)}
             </Modal>
             <Button variant="contained" size="small" color="primary" onClick={function(){handleOpenDel(employee)}}>Dismiss</Button>
-            <Modal css={styles.modal} open={openDel} onClose={handleCloseDel}>
+            <Modal open={openDel} onClose={handleCloseDel}>
               {deleteEmployee(employee)}
             </Modal>
         </div>
@@ -222,12 +231,12 @@ const modifyJob = (employee) => { return(
             <img src={Woman} width="50" height="50"/>
             <h5>{employee.firstname} {employee.lastname} </h5><h5 style={{color:'#5a94af'}}>{employee.role}</h5>
             <h6>{employee.email}</h6>
-            <Button variant="contained" size="small" color="secondary" onClick={function(){handleOpenModify()}} style={{marginRight:'10px'}}>Upgrade</Button>
-            <Modal css={styles.modal} open={openModify} onClose={handleCloseModify}>
+            <Button variant="contained" size="small" color="secondary" onClick={function(){handleOpenModify(employee)}} style={{marginRight:'10px'}}>Upgrade</Button>
+            <Modal open={openModify} onClose={handleCloseModify}>
               {modifyJob(employee)}
             </Modal>
             <Button variant="contained" size="small" color="primary" onClick={function(){handleOpenDel(employee)}}>Dismiss</Button>
-            <Modal css={styles.modal} open={openDel} onClose={handleCloseDel}>
+            <Modal open={openDel} onClose={handleCloseDel}>
               {deleteEmployee(employee)}
             </Modal>
         </div>

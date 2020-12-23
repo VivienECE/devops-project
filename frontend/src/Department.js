@@ -94,11 +94,13 @@ export default () =>  {
   const handleCloseAdd = () => { 
       setOpenAdd(false);};
     
-  const newEmployee = (
+  const newEmployee = (department) => {
+    console.log(department)
+    return(
       <div align="center" css={styles.modal}>
           <CreateEmployee department={department}/>
       </div> 
-  );
+  );}
 
     return (
       <div css={styles.root}>
@@ -107,7 +109,7 @@ export default () =>  {
             <PersonAddIcon fontSize="large" style={{ color: '#5a94af' }}/>
           </Button>
           <Modal open={openAdd} onClose={handleCloseAdd}>
-            {newEmployee}
+            {newEmployee(departmentName)}
           </Modal>
           <h2>{department.name}</h2>
         </div>

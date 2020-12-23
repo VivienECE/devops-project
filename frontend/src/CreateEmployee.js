@@ -40,7 +40,7 @@ const styles = {
 
 const CreateEmployee = (department) => { 
   const [avatar, setAvatar] = useState(avatarNone)
-
+  console.log(department.department.current)
 //Firstname
   const [firstname, setFirstname] = useState('')
   const handleChangeFirstname = (e) => {
@@ -82,14 +82,16 @@ const [email, setEmail] = useState('')
 //save all fields
   const Save = async () => {
     await axios.post(`http://localhost:3000/employee`, {
+      id: firstname + lastname,
       firstname: firstname,
       lastname: lastname,
-      gender: gender,
-      job: job,
-      department: department,
       email: email,
-      birth: birth
+      birth: birth,
+      role: job,
+      gender: gender,
+      department: department.department.current,
     })
+    window.location.reload()
   }
 
 	return (

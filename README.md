@@ -6,7 +6,9 @@ This is an application Vivien and Clemence created. It is a basic NodeJS web app
 
 ### Initialization
 
-In init file, we initialized three departments with employees. To init :
+In init file, we initialized three departments with employees. 
+Redis-server on required.
+To init :
 ```bash
 $ npm --prefix backend install 
 $ node backend/src/init
@@ -36,15 +38,14 @@ npm --prefix backend install
 
 We implemented a web application that allows a Human Resources Manager, for example, to see his/her compagny's chart: get the employees of each department and decide to dismiss or upgrade them. Also, it is possible to add an employee to any department. 
 
-* Our application ensures CRUD user funtionality.
+* Our application ensures CRUD user funtionality. 
 * We used Redis to store information. 
 * We coded some tests for the connection, creation and listing of employees...
 
 ### CI/CD pipeline
 
-We configured and applied CI/CD pipeline using the platforms Travis CI and Heroku. Links : 
+We configured and applied CI/CD pipeline using Travis CI. Links : 
 * Travis CI: https://travis-ci.com/github/VivienECE/devops-project
-* Heroku: VIVIEN
 
 ### IaC approach
 
@@ -73,11 +74,6 @@ Using Minikube, we installed Kubernetes and created yaml files:
 * services
 * persistent volume and persistent volume claim
 
-### Istio
-
-We made a service mesh using Istio by creating configuration of:
-* route requests between 2 different versions of our app
-* traffic shifting between 2 different versions of our app
 
 ### Bonus
 
