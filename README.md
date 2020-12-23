@@ -6,7 +6,9 @@ This is an application Vivien and Clemence created. It is a basic NodeJS web app
 
 ### Initialization
 
-In init file, we initialized three departments with employees. To init :
+In init file, we initialized three departments with employees. 
+Redis-server on required.
+To init :
 ```bash
 $ npm --prefix backend install 
 $ node backend/src/init
